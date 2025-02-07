@@ -11,4 +11,11 @@ app.get('*', (req, res) => {
     res.status(200);
 });
 
-app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started at port ${PORT}`)).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Try using another port.`);
+        process.exit(1);
+    } else {
+        throw err;
+    }
+});;

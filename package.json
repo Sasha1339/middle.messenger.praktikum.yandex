@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "vite build && node server.cjs",
+    "start": "(pkill -f node || echo \"No Node.js processes found\") && vite build && node server.cjs",
     "build": "vite build",
     "preview": "vite preview"
   },
