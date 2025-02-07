@@ -1,0 +1,33 @@
+<div class="home">
+    <div class="home__dialogs">
+        <div class="home__title">
+            <div class="home__title-top">
+                <div class="home__title-name">SMARTgram</div>
+                <div class="home__title-settings">
+                    <img src="{{settings}}" alt="" class="svg__settings">
+                </div>
+            </div>
+            <div class="home__title-bottom">
+                <img src="{{search}}" alt="" class="svg__search">
+                <input type="text" class="home__search" placeholder="Поиск">
+            </div>
+        </div>
+        {{#each dialogs}}
+            {{> Dialog }}
+        {{/each}}
+    </div>
+    <div class="home__chat">
+        <div class="home__chat-messages"></div>
+        <div class="home__chat-input">
+            <div class="home__input-panel-add">
+                <img src="{{add}}" alt="" class="svg__add">
+            </div>
+            <div class="home__input-panel-message">
+                <input type="text" name="message" class="home__input-message" placeholder="Сообщение">
+            </div>
+            <div class="home__input-panel-enter">
+                <img src="{{arrow}}" alt="" class="svg__arrow">
+            </div>
+        </div>
+    </div>
+</div>

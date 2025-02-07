@@ -1,0 +1,56 @@
+<div class="profile">
+    <div class="profile__button-back">
+        <div class="profile__back">
+            <img src="{{arrow}}" alt="" class="svg__arrow">
+        </div>
+    </div>
+    <div class="profile__main">
+        <div class="profile__user-card">
+            <div class="profile__avatar">
+                <img src="{{avatar}}" alt="" class="profile__avatar-img">
+            </div>
+            <div class="profile__username">Сергей</div>
+            <div class="profile__field">
+                <div class="profile__text">Почта</div>
+                <div class="profile__text">s@ya.ru</div>
+            </div>
+            <div class="profile__field">
+                <div class="profile__text">Логин</div>
+                <div class="profile__text">Serge</div>
+            </div>
+            <div class="profile__field">
+                <div class="profile__text">Имя</div>
+                <div class="profile__text">Сергей</div>
+            </div>
+            <div class="profile__field">
+                <div class="profile__text">Фамилия</div>
+                <div class="profile__text">Морозов</div>
+            </div>
+            <div class="profile__field">
+                <div class="profile__text">Имя в чате</div>
+                <div class="profile__text">Сергей</div>
+            </div>
+            <div class="profile__field">
+                <div class="profile__text">Телефон</div>
+                <div class="profile__text">8 800 535 35 35</div>
+            </div>
+            <div class="profile__buttons">
+                {{> button label='Изменить данные' class='profile__edit'}}
+                {{> button label='Изменить пароль' class='profile__edit-password'}}
+                {{> button label='Выйти' class='profile__exit'}}
+            </div>
+        </div>
+    </div>
+    <div class="profile__windows_disabled window__load-files">
+        {{> LoadFileWindow }}
+    </div>
+    <div class="profile__windows_disabled window__exit">
+        {{> WindowExit }}
+    </div>
+    <div class="profile__windows_disabled window__edit">
+        {{> ProfileEditWindow }}
+    </div>
+    <div class="profile__windows_disabled window__edit-password">
+        {{> PasswordChangeWindow }}
+    </div>
+</div>

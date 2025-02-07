@@ -1,24 +1,84 @@
 import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import avatar from './assets/image/avatar.jpg';
+import search from './assets/svg/search.svg';
+import settings from './assets/svg/settings.svg';
+import add from './assets/svg/add.svg';
+import arrow from './assets/svg/arrow.svg';
+import {setup as setupProfile} from './pages/profile/profile.ts';
+import * as Pages from './pages'
+import Handlebars from "handlebars";
+import * as Components from "./components";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const dialogs = [
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: '1 окт 2021', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
+    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4}
+]
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+
+const pages = {
+    'profile': [Pages.ProfilePage, { avatar: avatar, arrow: arrow}],
+    'nav': [Pages.NavigationPage],
+    'home': [Pages.HomePage, {
+        partialName: 'home',
+        dialogs: dialogs,
+        search: search,
+        arrow: arrow,
+        add: add,
+        settings: settings
+    }],
+    'login': [Pages.LoginPage],
+    'register': [Pages.RegisterPage],
+    'error4xx': [Pages.ErrorPage, {errorType: 'Page4xx'}],
+    'error5xx': [Pages.ErrorPage, {errorType: 'Page5xx'}],
+}
+
+const setupPage = (page: string) => {
+    switch (page) {
+        case 'profile':
+            setupProfile();
+            break;
+    }
+}
+
+Object.entries(Components).forEach(([name, template]) => {
+    Handlebars.registerPartial(name, template);
+})
+
+function navigate(page: string) {
+    // @ts-ignore
+    const [source, context] = pages[page];
+    const container = document.querySelector('#app')!;
+
+    const templateFun = Handlebars.compile(source);
+    container.innerHTML = templateFun(context);
+    setupPage(page);
+}
+
+document.addEventListener('DOMContentLoaded', () => {navigate('nav')})
+
+document.addEventListener('click', e => {
+    //@ts-ignore
+    const page = e.target.getAttribute('page')
+    if (page) {
+        navigate(page);
+
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    }
+})

@@ -1,0 +1,49 @@
+.window__input {
+    margin-bottom: 20px;
+}
+
+.window__inputs{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.window__form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    height: 90%;
+}
+
+.window__button-edit {
+    width: 80%;
+}
+
+p.window__button-cancel {
+        color: white;
+        font-family: Inter, sans-serif;
+        font-size: 15px;
+        margin-top: 15px;
+        cursor: pointer;
+}
+
+.window__edit-profile {
+    display: flex;
+    margin: auto;
+    height: 50vh;
+    width: 25vw;
+    flex-direction: column;
+    justify-content: space-between;
+
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(7px);
+    align-items: center;
+    font-family: Inter, sans-serif;
+    padding: 50px 0;
+    color: white;
+
+    border-radius: 20px;
+}
