@@ -27,3 +27,6 @@ Register - страница регистрации
 
 Для данного приложения был составлен предварительный макет (UI) для просмотра макета перейдите по ссылке
 https://www.figma.com/design/RnYIx16gnB2JifcanOOs3M/Untitled?node-id=0-1&p=f&t=RIUXQInEPuCNm2ox-0
+
+ссылка на развернутое приложение:
+https://visionary-brioche-422987.netlify.app/
