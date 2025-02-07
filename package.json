@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "start": "tsc && vite build && node server.cjs",
+    "start": "vite build && node server.cjs",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -17,10 +17,6 @@
     "handlebars": "^4.7.8"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "crypto-browserify": "^3.12.1",
-    "postcss": "^8.4.49",
-    "postcss-preset-env": "^10.1.1",
     "typescript": "~5.7.2",
     "vite": "^6.1.0"
   }
