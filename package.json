@@ -7,15 +7,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "start": "vite build && node server.сjs",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "handlebars": "^4.7.8",
-    "lodash-es": "^4.17.21",
-    "vite-plugin-handlebars": "^2.0.0"
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "typescript": "~5.7.2",
