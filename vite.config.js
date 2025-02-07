@@ -1,13 +1,15 @@
 import {defineConfig} from 'vite'
 import handlebars from "vite-plugin-handlebars";
-import {nodePolyfills} from "vite-plugin-node-polyfills";
+import { resolve } from 'path';
 
 export default defineConfig({
     root: '.',
-    define: {
-        'process.env': {} // Это помогает избежать ошибок с переменными окружения
+    build: {
+        rollupOptions: {
+            input: {
+                main: resolve(__dirname, './src/main.js'),
+            }
+        }
     },
-    plugins: [handlebars(), nodePolyfills({
-        protocolImports: true,
-    }),],
+    plugins: [handlebars()],
 })
