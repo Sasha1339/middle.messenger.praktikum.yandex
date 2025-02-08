@@ -1,0 +1,40 @@
+<main class="home">
+    <aside class="home__dialogs">
+        <header class="home__title">
+            <div class="home__title-top">
+                <h1 class="home__title-name">SMARTgram</h1>
+                <button class="home__title-settings" type="button">
+                    <img src="{{settings}}" alt="Настройки профиля" class="svg__settings">
+                </button>
+            </div>
+            <div class="home__title-bottom">
+                <label for="search-input">
+                    <img src="{{search}}" alt="Поиск" class="svg__search">
+                </label>
+                <input type="text" id="search-input" class="home__search" placeholder="Поиск">
+            </div>
+        </header>
+        <section class="home__dialog-list">
+            {{#each dialogs}}
+                {{> Dialog }}
+            {{/each}}
+        </section>
+    </aside>
+    <section class="home__chat">
+        <div class="home__chat-messages"></div>
+        <form class="home__chat-input">
+            <div class="home__input-panel-add">
+                <label for="file-upload" class="home__label-file-load">
+                    <img src="{{add}}" alt="Добавить файл" class="svg__add">
+                </label>
+                <input type="file" id="file-upload" name="file" class="home__input-file">
+            </div>
+            <div class="home__input-panel-message">
+                <input type="text" name="message" class="home__input-message" placeholder="Сообщение">
+            </div>
+            <button class="home__input-button-enter" type="submit">
+                    <img src="{{arrow}}" alt="Отправить сообщение" class="svg__arrow">
+            </button>
+        </form>
+    </section>
+</main>
