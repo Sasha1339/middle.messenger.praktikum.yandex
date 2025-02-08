@@ -30,6 +30,7 @@ const dialogs = [
     {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4}
 ]
 
+type PageKey = keyof typeof pages;
 
 const pages = {
     'profile': [Pages.ProfilePage, { avatar: avatar, arrow: arrow}],
@@ -48,7 +49,7 @@ const pages = {
     'error5xx': [Pages.ErrorPage, {errorType: 'Page5xx'}],
 }
 
-const setupPage = (page: string) => {
+const setupPage = (page: PageKey) => {
     switch (page) {
         case 'profile':
             setupProfile();
@@ -60,8 +61,7 @@ Object.entries(Components).forEach(([name, template]) => {
     Handlebars.registerPartial(name, template);
 })
 
-function navigate(page: string) {
-    // @ts-ignore
+function navigate(page: PageKey) {
     const [source, context] = pages[page];
     const container = document.querySelector('#app')!;
 
@@ -72,13 +72,14 @@ function navigate(page: string) {
 
 document.addEventListener('DOMContentLoaded', () => {navigate('nav')})
 
-document.addEventListener('click', e => {
-    //@ts-ignore
-    const page = e.target.getAttribute('page')
-    if (page) {
-        navigate(page);
-
-        e.preventDefault();
-        e.stopImmediatePropagation();
+document.addEventListener('click', event => {
+    const {target} = event;
+    if (target instanceof HTMLElement) {
+        const page = target.getAttribute('page')
+        if (page && page in pages) {
+            navigate(page as PageKey);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
     }
-})
+});

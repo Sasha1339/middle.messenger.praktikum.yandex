@@ -14,14 +14,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0E0027;
-    border-right: 1px solid #fff;
+    background-color: var(--primary-bg);
+    border-right: 1px solid var(--primary-border);
+}
+
+.profile__info {
+    margin: 0;
 }
 
 .profile__username {
     display: flex;
     justify-content: center;
-    color: white;
+    color: var(--primary-text);
     font-family: Inter, sans-serif;
     font-size: 20px;
     margin-bottom: 40px;
@@ -38,7 +42,7 @@
 }
 
 .profile__user-card {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--bg-modal-opacity-window);
     backdrop-filter: blur(7px);
     width: 40vw;
     height: 80vh;
@@ -48,17 +52,18 @@
     padding: 70px 70px;
     border-radius: 20px;
     box-sizing: border-box;
+    justify-content: space-between;
 }
 
 .profile__exit {
-    background-color: red !important;
+    background-color: var(--secondary-button-bg) !important;
 }
 
 .profile__text {
     display: flex;
     align-items: center;
 
-    color: white;
+    color: var(--primary-text);
     font-family: Inter, sans-serif;
     font-size: 20px;
 
@@ -70,7 +75,7 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--primary-border);;
     height: 40px;
 }
 
@@ -83,7 +88,7 @@
 }
 
 .profile__exit {
-    background-color: #ff0000;
+    background-color: var(--secondary-button-bg);
 }
 
 .profile__back {
@@ -91,11 +96,13 @@
     width: 40px;
     height: 40px;
     border-radius: 25px;
-    background-color: rgba(239, 239, 239, 0.2);
+    background-color: var(--background-opacity-button);
     margin: auto;
     justify-content: center;
     align-items: center;
-    transform: scale(-1, -1)
+    transform: scale(-1, -1);
+    outline: none;
+    border: none;
 }
 
 .svg__arrow {
@@ -113,5 +120,5 @@
     position: fixed;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--background-modal-window);
 }

@@ -1,10 +1,10 @@
 .button {
-    background-color: #4E1E6D;
+    background-color: var(--primary-button-bg);
     min-width: 140px;
     height: 50px;
     border-radius: 5px;
     padding: 0 10px;
-    color: #fff;
+    color: var(--primary-text);
     font-size: 17px;
     border: none;
     font-family: Inter, sans-serif;
