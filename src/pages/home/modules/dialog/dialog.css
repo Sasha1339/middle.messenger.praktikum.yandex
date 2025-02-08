@@ -3,7 +3,7 @@
     grid-template-columns: 100px auto 100px;
     width: 100%;
     min-height: 100px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--bg-modal-opacity-window);
     backdrop-filter: blur(7px);
     border-radius: 20px;
     user-select: none;
@@ -37,7 +37,7 @@
     padding: 10px 20px 10px 0;
     font-family: Inter, sans-serif;
     font-size: 15px;
-    color: white;
+    color: var(--primary-text);
 }
 
 p {
@@ -48,18 +48,18 @@ p {
 .dialog__name {
     display: flex;
     align-items: end;
-    color: white;
+    color: var(--primary-text);
 }
 
 .dialog__message {
-    color: #999999
+    color: var(--secondary-text);
 }
 
 .dialog__cycle {
     font-size: 20px;
     height: 30px;
     width: 30px;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: var(--bg-couner-message);
     border-radius: 50%;
     align-content: center;
     text-align: center;

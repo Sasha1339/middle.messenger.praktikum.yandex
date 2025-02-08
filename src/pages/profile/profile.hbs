@@ -1,46 +1,50 @@
-<div class="profile">
-    <div class="profile__button-back">
-        <div class="profile__back">
-            <img src="{{arrow}}" alt="" class="svg__arrow">
-        </div>
-    </div>
-    <div class="profile__main">
-        <div class="profile__user-card">
+<main class="profile">
+    <aside class="profile__button-back">
+        <button class="profile__back" type="button">
+            <img src="{{arrow}}" alt="Вернуться на страницу чатов" class="svg__arrow">
+        </button>
+    </aside>
+    <section class="profile__main">
+        <article class="profile__user-card">
             <div class="profile__avatar">
-                <img src="{{avatar}}" alt="" class="profile__avatar-img">
+                <img src="{{avatar}}" alt="Аватар пользователя" class="profile__avatar-img">
             </div>
-            <div class="profile__username">Сергей</div>
-            <div class="profile__field">
-                <div class="profile__text">Почта</div>
-                <div class="profile__text">s@ya.ru</div>
-            </div>
-            <div class="profile__field">
-                <div class="profile__text">Логин</div>
-                <div class="profile__text">Serge</div>
-            </div>
-            <div class="profile__field">
-                <div class="profile__text">Имя</div>
-                <div class="profile__text">Сергей</div>
-            </div>
-            <div class="profile__field">
-                <div class="profile__text">Фамилия</div>
-                <div class="profile__text">Морозов</div>
-            </div>
-            <div class="profile__field">
-                <div class="profile__text">Имя в чате</div>
-                <div class="profile__text">Сергей</div>
-            </div>
-            <div class="profile__field">
-                <div class="profile__text">Телефон</div>
-                <div class="profile__text">8 800 535 35 35</div>
-            </div>
+            <h2 class="profile__username">Сергей</h2>
+
+            <dl class="profile__info">
+                <div class="profile__field">
+                    <dt class="profile__text">Почта</dt>
+                    <dd class="profile__text">s@ya.ru</dd>
+                </div>
+                <div class="profile__field">
+                    <dt class="profile__text">Логин</dt>
+                    <dd class="profile__text">Serge</dd>
+                </div>
+                <div class="profile__field">
+                    <dt class="profile__text">Имя</dt>
+                    <dd class="profile__text">Сергей</dd>
+                </div>
+                <div class="profile__field">
+                    <dt class="profile__text">Фамилия</dt>
+                    <dd class="profile__text">Морозов</dd>
+                </div>
+                <div class="profile__field">
+                    <dt class="profile__text">Имя в чате</dt>
+                    <dd class="profile__text">Сергей</dd>
+                </div>
+                <div class="profile__field">
+                    <dt class="profile__text">Телефон</dt>
+                    <dd class="profile__text">8 800 535 35 35</dd>
+                </div>
+            </dl>
+
             <div class="profile__buttons">
                 {{> button label='Изменить данные' class='profile__edit'}}
                 {{> button label='Изменить пароль' class='profile__edit-password'}}
                 {{> button label='Выйти' class='profile__exit'}}
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
     <div class="profile__windows_disabled window__load-files">
         {{> LoadFileWindow }}
     </div>
@@ -53,4 +57,4 @@
     <div class="profile__windows_disabled window__edit-password">
         {{> PasswordChangeWindow }}
     </div>
-</div>
+</main>
