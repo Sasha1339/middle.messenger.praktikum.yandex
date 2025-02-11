@@ -14,11 +14,7 @@
                 <input type="text" id="search-input" class="home__search" placeholder="Поиск">
             </div>
         </header>
-        <section class="home__dialog-list">
-            {{#each dialogs}}
-                {{> Dialog }}
-            {{/each}}
-        </section>
+        {{{ DialogList }}}
     </aside>
     <section class="home__chat">
         <div class="home__chat-messages"></div>
