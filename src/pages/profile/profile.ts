@@ -1,116 +1,41 @@
-import './profile.css'
-import * as Modules from './modules'
-import Handlebars from 'handlebars';
+import Block from "../../utils/block/block.ts";
+import Button from "../../components/button/buttons.ts";
+import {ProfilePage} from "./index.ts";
+import arrow from '../../assets/svg/arrow.svg';
+import avatar from '../../assets/image/avatar.jpg';
+import LoadFilesComponent from "./modules/load-files/load-files.ts";
+import WindowExitComponent from "./modules/window-exit/window-exit.ts";
+import EditProfileComponent from "./modules/edit-profile/edit-profile.ts";
+import ChangePasswordComponent from "./modules/change-password/change-password.ts";
 
-Object.entries(Modules).forEach(([name, template]) => {
-    Handlebars.registerPartial(name, template);
-})
 
-function openWindowEdit() {
-    const avatarElement = document.querySelector('.profile__edit');
+export default class ProfileComponent extends Block {
 
-    if (avatarElement) {
-        avatarElement.addEventListener('click', () => {
-            const windowLoadFiles = document.querySelector('.window__edit');
-            windowLoadFiles?.classList.remove('profile__windows_disabled');
-            windowLoadFiles?.classList.add('profile__windows_enabled');
-        })
+    constructor() {
+        super({
+            LoadFileWindow: new LoadFilesComponent(),
+            WindowExit: new WindowExitComponent(),
+            ProfileEditWindow: new EditProfileComponent(),
+            PasswordChangeWindow: new ChangePasswordComponent(),
+            ButtonEditProfile: new Button({
+                label: 'Изменить данные',
+                class: 'profile__edit'
+            }),
+            ButtonEditPassword: new Button({
+                label: 'Изменить пароль',
+                class: 'profile__edit-password'
+            }),
+            ButtonExit: new Button({
+                label: 'Выйти',
+                class: 'profile__exit'
+            }),
+            arrow: arrow,
+            avatar: avatar,
+        });
     }
-}
 
-function openWindowEditPassword() {
-    const avatarElement = document.querySelector('.profile__edit-password');
-
-    if (avatarElement) {
-        avatarElement.addEventListener('click', () => {
-            const windowLoadFiles = document.querySelector('.window__edit-password');
-            windowLoadFiles?.classList.remove('profile__windows_disabled');
-            windowLoadFiles?.classList.add('profile__windows_enabled');
-        })
+    render(): string {
+        return ProfilePage;
     }
-}
 
-function editProfile() {
-    const editElement = document.querySelector('.window__button-edit');
-
-    if (editElement) {
-        editElement.addEventListener('click', () => {
-            const windowEnabled = document.querySelector('.profile__windows_enabled');
-            windowEnabled?.classList.add('profile__windows_disabled');
-            windowEnabled?.classList.remove('profile__windows_enabled');
-        })
-    }
-}
-
-function editPasswordFun() {
-    const editPasswordElement = document.querySelector('.window__button-edit-password');
-
-    if (editPasswordElement) {
-        editPasswordElement.addEventListener('click', () => {
-            const windowEnabled = document.querySelector('.profile__windows_enabled');
-            windowEnabled?.classList.add('profile__windows_disabled');
-            windowEnabled?.classList.remove('profile__windows_enabled');
-        })
-    }
-}
-
-function loadNewAvatar() {
-    const avatarElement = document.querySelector('.profile__avatar-img');
-
-    if (avatarElement) {
-        avatarElement.addEventListener('click', () => {
-            const windowLoadFiles = document.querySelector('.window__load-files');
-            windowLoadFiles?.classList.remove('profile__windows_disabled');
-            windowLoadFiles?.classList.add('profile__windows_enabled');
-        })
-    }
-}
-
-function exitFromAcc() {
-    const exitElement = document.querySelector('.profile__exit');
-
-    if (exitElement) {
-        exitElement.addEventListener('click', () => {
-            const windowLoadFiles = document.querySelector('.window__exit');
-            windowLoadFiles?.classList.remove('profile__windows_disabled');
-            windowLoadFiles?.classList.add('profile__windows_enabled');
-        })
-    }
-}
-
-function cancel() {
-    const cancelButtons = document.querySelectorAll('.window__button-cancel');
-
-    if (cancelButtons) {
-        cancelButtons.forEach((e) => {
-            e.addEventListener('click', () => {
-                const windowEnabled = document.querySelector('.profile__windows_enabled');
-                windowEnabled?.classList.add('profile__windows_disabled');
-                windowEnabled?.classList.remove('profile__windows_enabled');
-            })
-        })
-    }
-}
-
-function avatarIsLoaded() {
-    const loadButton = document.querySelector('.window__button-load');
-
-    if (loadButton) {
-        loadButton.addEventListener('click', () => {
-            const windowEnabled = document.querySelector('.profile__windows_enabled');
-            windowEnabled?.classList.add('profile__windows_disabled');
-            windowEnabled?.classList.remove('profile__windows_enabled');
-        })
-    }
-}
-
-export function setup() {
-    loadNewAvatar();
-    avatarIsLoaded();
-    exitFromAcc();
-    cancel();
-    editProfile();
-    openWindowEdit();
-    openWindowEditPassword();
-    editPasswordFun();
 }

@@ -1,16 +1,16 @@
 <div class="window__edit-profile">
-    <p class="window__title">Регистрация</p>
+    <p class="window__title">Изменить данные профиля</p>
     <form class="window__form">
         <div class="window__inputs">
-            {{> input placeholder='Имя' class='window__input' textType='text' name='first_name'}}
-            {{> input placeholder='Фамилия' class='window__input' textType='text' name='second_name'}}
-            {{> input placeholder='Отображаемое имя' class='window__input' textType='text' name='display_name'}}
-            {{> input placeholder='Логин' class='window__input' textType='text' name='login'}}
-            {{> input placeholder='Email' class='window__input' textType='text' name='email'}}
-            {{> input placeholder='Телефон' class='window__input' textType='text' name='phone'}}
+            {{{ FirstNameInput }}}
+            {{{ SecondNameInput }}}
+            {{{ DisolayNameInput }}}
+            {{{ LoginInput }}}
+            {{{ EmailInput }}}
+            {{{ PhoneInput }}}
         </div>
         <div class="window__inputs">
-            {{> button label='Редактировать' class='window__button-edit'}}
+            {{{ ButtonAccept }}}
             <p class="window__button-cancel">Отмена</p>
         </div>
     </form>

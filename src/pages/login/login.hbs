@@ -3,11 +3,11 @@
         <h1 class="login__title">Вход</h1>
         <form class="login__form">
             <div class="login__inputs">
-                {{> input placeholder='Логин' class='login__input' textType='text' name='login'}}
-                {{> input placeholder='Пароль' name='password'}}
+                {{{ LoginInput }}}
+                {{{ PasswordInput }}}
             </div>
             <div class="login__inputs">
-                {{> button label='Авторизоваться' class='login__button'}}
+                {{{ ButtonAuth }}}
                 <p class="login__register">Нет аккаунта?</p>
             </div>
         </form>

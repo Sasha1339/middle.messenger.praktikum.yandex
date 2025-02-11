@@ -4,10 +4,13 @@ import search from './assets/svg/search.svg';
 import settings from './assets/svg/settings.svg';
 import add from './assets/svg/add.svg';
 import arrow from './assets/svg/arrow.svg';
-import {setup as setupProfile} from './pages/profile/profile.ts';
+import ProfileComponent from './pages/profile/profile.ts';
 import * as Pages from './pages'
 import Handlebars from "handlebars";
-import * as Components from "./components";
+import LoginComponent from "./pages/login/login.ts";
+import Block from "./utils/block/block.ts";
+import Button from "./components/button/buttons.ts";
+import RegisterComponent from "./pages/register/register.ts";
 
 const dialogs = [
     {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
@@ -32,45 +35,43 @@ const dialogs = [
 
 type PageKey = keyof typeof pages;
 
-const pages = {
-    'profile': [Pages.ProfilePage, { avatar: avatar, arrow: arrow}],
-    'nav': [Pages.NavigationPage],
-    'home': [Pages.HomePage, {
-        partialName: 'home',
-        dialogs: dialogs,
-        search: search,
-        arrow: arrow,
-        add: add,
-        settings: settings
-    }],
-    'login': [Pages.LoginPage],
-    'register': [Pages.RegisterPage],
-    'error4xx': [Pages.ErrorPage, {errorType: 'Page4xx'}],
-    'error5xx': [Pages.ErrorPage, {errorType: 'Page5xx'}],
+const pages: Record<string, Block> = {
+    'login': new LoginComponent(),
+    'register': new RegisterComponent(),
+    'profile': new ProfileComponent()
 }
 
 const setupPage = (page: PageKey) => {
-    switch (page) {
-        case 'profile':
-            setupProfile();
-            break;
-    }
+    // switch (page) {
+    //     case 'profile':
+    //         setupProfile();
+    //         break;
+    // }
 }
 
-Object.entries(Components).forEach(([name, template]) => {
-    Handlebars.registerPartial(name, template);
-})
+function render(element: HTMLElement, block: Block) {
+
+    element.childNodes.forEach((e) => e.remove());
+
+    element.appendChild(block.getContent());
+
+    block.dispatchComponentDidMount()
+
+}
 
 function navigate(page: PageKey) {
-    const [source, context] = pages[page];
-    const container = document.querySelector('#app')!;
+    const source = pages[page];
+    const container = document.querySelector('#app')! as HTMLElement;
 
-    const templateFun = Handlebars.compile(source);
-    container.innerHTML = templateFun(context);
-    setupPage(page);
+    render(container, source);
 }
 
-document.addEventListener('DOMContentLoaded', () => {navigate('nav')})
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('#app')! as HTMLElement;
+
+    const templateFun = Handlebars.compile(Pages.NavigationPage);
+    container.innerHTML = templateFun({});
+})
 
 document.addEventListener('click', event => {
     const {target} = event;
