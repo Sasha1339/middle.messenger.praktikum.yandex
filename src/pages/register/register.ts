@@ -4,6 +4,7 @@ import Button from "../../components/button/buttons.ts";
 import Input from "../../components/input/input.ts";
 import ClickableText from "../../components/clickable-text/clickable-text.ts";
 import FormComponent from "../../components/form/form.ts";
+import {FormContainer} from "../../utils/form/form-container.ts";
 
 export default class RegisterComponent extends Block {
 
@@ -44,13 +45,12 @@ export default class RegisterComponent extends Block {
                 PasswordOneInput: new Input({
                     placeholder: 'Пароль',
                     class: 'register__input',
-                    textType: 'text',
                     name: 'password'
                 }),
                 PasswordTwoInput: new Input({
                     placeholder: 'Пароль (еще раз)',
                     class: 'register__input',
-                    textType: 'text',
+                    name: 'password_two'
                 }),
                 ButtonRegister: new Button({
                     label: 'Зарегестироваться',
@@ -59,13 +59,21 @@ export default class RegisterComponent extends Block {
                 TextLogin: new ClickableText({
                     class: 'register__auth',
                     text: 'Войти'
-                })
+                }),
+                events: {
+                    'submit': (event: SubmitEvent) => { event.preventDefault(); this.outputData(event) }
+                }
             })
         });
     }
 
     render(): string {
         return RegisterPage;
+    }
+
+    outputData(event: SubmitEvent): void {
+        const container = new FormContainer(event.target as HTMLFormElement);
+        console.log(container);
     }
 
 }

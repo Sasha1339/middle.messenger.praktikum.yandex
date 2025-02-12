@@ -8,7 +8,7 @@ export default class FormComponent extends Block {
     }
 
     render(): string {
-        return `<form class="{{class}}__form">
+        return `<form class="{{class}}__form" id="formData">
                     <div class="{{class}}__inputs">
                         ${this.buildTemplateInputs()}
                     </div>

@@ -4,6 +4,7 @@ import {PasswordChangeWindow} from "./index.ts";
 import Input from "../../../../components/input/input.ts";
 import ClickableText from "../../../../components/clickable-text/clickable-text.ts";
 import FormComponent from "../../../../components/form/form.ts";
+import {FormContainer} from "../../../../utils/form/form-container.ts";
 
 export default class ChangePasswordComponent extends Block {
 
@@ -23,10 +24,7 @@ export default class ChangePasswordComponent extends Block {
                 }),
                 ButtonAccept: new Button({
                     label: 'Изменить',
-                    class: 'window__button-edit-password',
-                    events: {
-                        'click': events.clickOnAccept
-                    }
+                    class: 'window__button-edit-password'
                 }),
                 TextCancel: new ClickableText({
                     class: 'window__button-cancel',
@@ -34,13 +32,21 @@ export default class ChangePasswordComponent extends Block {
                     events: {
                         'click': events.clickOnCancel
                     }
-                })
+                }),
+                events: {
+                    'submit': (event: SubmitEvent) => { event.preventDefault(); this.outputData(event) }
+                }
             })
         });
     }
 
     render(): string {
         return PasswordChangeWindow;
+    }
+
+    outputData(event: SubmitEvent): void {
+        const container = new FormContainer(event.target as HTMLFormElement);
+        console.log(container);
     }
 
 }

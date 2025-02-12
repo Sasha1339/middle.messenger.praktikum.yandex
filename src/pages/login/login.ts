@@ -4,6 +4,7 @@ import Button from "../../components/button/buttons.ts";
 import Input from "../../components/input/input.ts";
 import ClickableText from "../../components/clickable-text/clickable-text.ts";
 import FormComponent from "../../components/form/form.ts";
+import {FormContainer} from "../../utils/form/form-container.ts";
 
 export default class LoginComponent extends Block {
 
@@ -30,7 +31,7 @@ export default class LoginComponent extends Block {
                     text: 'Нет аккаунта?'
                 }),
                 events: {
-                    'submit': (event: Event) => { event.preventDefault(); this.validation() }
+                    'submit': (event: SubmitEvent) => { event.preventDefault(); this.outputData(event) }
                 }
             })
         });
@@ -40,8 +41,9 @@ export default class LoginComponent extends Block {
         return LoginPage;
     }
 
-    validation(): void {
-        console.log('Валидация');
+    outputData(event: SubmitEvent): void {
+        const container = new FormContainer(event.target as HTMLFormElement);
+        console.log(container);
     }
 
 }
