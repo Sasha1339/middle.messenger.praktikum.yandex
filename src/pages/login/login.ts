@@ -16,11 +16,19 @@ export default class LoginComponent extends Block {
                     placeholder: 'Логин',
                     class: 'login__input',
                     textType: 'text',
-                    name: 'login'
+                    name: 'login',
+                    pattern: '^(?!\\d+$)[a-zA-Z0-9]+$',
+                    title: 'Допустимы латинские буквы и цифры, не должны быть исключительно одни цифры, не менее 3 символов',
+                    min: 3,
+                    max: 20
                 }),
                 PasswordInput: new Input({
                     placeholder: 'Пароль',
-                    name: 'password'
+                    name: 'password',
+                    pattern: '^(?=.*[A-Z])(?=.*\\d).+$',
+                    title: 'Должна быть хотя бы одна цифра и заглавная латинская буква, не менее 8 символов',
+                    min: 8,
+                    max: 40
                 }),
                 ButtonAuth: new Button({
                     label: 'Авторизироваться',

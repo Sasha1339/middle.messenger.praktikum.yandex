@@ -3,7 +3,9 @@
   --primary-button-bg: #4E1E6D;
   --secondary-button-bg: red;
   --primary-border: white;
+  --invalid-border: red;
   --primary-text: white;
+  --invalid-text: red;
   --secondary-text: #999999;
   --bg-couner-message: rgba(255, 255, 255, 0.5);
   --background-opacity-button: rgba(239, 239, 239, 0.2);
