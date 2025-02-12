@@ -4,6 +4,6 @@ export interface DialogModel {
     name: string;
     message: string;
     lastUpdate: string;
-    countMessages: number;
+    countMessages: number | undefined;
 
 }

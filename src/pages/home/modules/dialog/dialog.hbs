@@ -13,8 +13,9 @@
     <div class="dialog__info">
         <p>{{lastUpdate}}</p>
         <div class="dialog__counter">
-            <div class="dialog__cycle">{{countMessages}}</div>
-
+            {{#if countMessages}}
+                <div class="dialog__cycle">{{countMessages}}</div>
+            {{/if}}
         </div>
     </div>
 </div>

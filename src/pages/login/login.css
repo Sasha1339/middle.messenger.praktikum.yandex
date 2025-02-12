@@ -41,6 +41,8 @@
     font-family: Inter, sans-serif;
     font-size: 15px;
     margin-top: 15px;
+
+    cursor: pointer;
 }
 
 .login__form {

@@ -143,7 +143,7 @@ export default class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     }
 
-    _componentDidUpdate(oldProps: string, newProps: string) {
+    _componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>) {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (!response) {
             return;
@@ -151,7 +151,8 @@ export default class Block {
         this._render();
     }
 
-    componentDidUpdate(oldProps: string, newProps: string): boolean {
+    componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>): boolean {
+        // Здесь можно реализовать логику, которая сравнивает старые и новые пропсы
         return true;
     }
 
@@ -196,13 +197,27 @@ export default class Block {
         }
     }
 
-    setProps = (nextProps: string) => {
+    setProps = (nextProps: Record<string, unknown>) => {
         if (!nextProps) {
             return;
         }
 
+        const oldProps = {...this._props};
         Object.assign(this._props, nextProps);
+
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this._props);
     };
+
+    setChildren = (nextChildren: Record<string, unknown>) => {
+        if (!nextChildren) {
+            return;
+        }
+
+        const oldChildren = {...this._children};
+        Object.assign(this._children, nextChildren);
+
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldChildren, this._children);
+    }
 
     _createDocumentElement(tagName: string) {
         const element = document.createElement(tagName) as HTMLTemplateElement;

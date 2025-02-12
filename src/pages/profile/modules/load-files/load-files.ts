@@ -5,11 +5,14 @@ import {LoadFileWindow} from "./index.ts";
 
 export default class LoadFilesComponent extends Block {
 
-    constructor() {
+    constructor(events: {clickOnLoad: () => void}) {
         super({
             ButtonLoad: new Button({
                 label: 'Загрузить новый аватар',
-                class: 'window__button-load'
+                class: 'window__button-load',
+                events: {
+                    'click': events.clickOnLoad
+                }
             })
         });
     }

@@ -1,33 +1,22 @@
 import './style.css'
-import avatar from './assets/image/avatar.jpg';
-import search from './assets/svg/search.svg';
-import settings from './assets/svg/settings.svg';
-import add from './assets/svg/add.svg';
-import arrow from './assets/svg/arrow.svg';
 import ProfileComponent from './pages/profile/profile.ts';
 import * as Pages from './pages'
 import Handlebars from "handlebars";
 import LoginComponent from "./pages/login/login.ts";
 import Block from "./utils/block/block.ts";
-import Button from "./components/button/buttons.ts";
 import RegisterComponent from "./pages/register/register.ts";
 import HomeComponent from "./pages/home/home.ts";
+import ErrorComponent from "./pages/error/error.ts";
 
 type PageKey = keyof typeof pages;
 
-const pages: Record<string, Block> = {
-    'login': new LoginComponent(),
-    'register': new RegisterComponent(),
-    'home': new HomeComponent(),
-    'profile': new ProfileComponent()
-}
-
-const setupPage = (page: PageKey) => {
-    // switch (page) {
-    //     case 'profile':
-    //         setupProfile();
-    //         break;
-    // }
+const pages: Record<string, () => Block> = {
+    'login': () => {return new LoginComponent()},
+    'register': () => {return new RegisterComponent()},
+    'home': () => {return new HomeComponent()},
+    'error4xx': () => {return new ErrorComponent('4xx')},
+    'error5xx': () => {return new ErrorComponent('5xx')},
+    'profile': () => {return new ProfileComponent()}
 }
 
 function render(element: HTMLElement, block: Block) {
@@ -44,7 +33,7 @@ function navigate(page: PageKey) {
     const source = pages[page];
     const container = document.querySelector('#app')! as HTMLElement;
 
-    render(container, source);
+    render(container, source());
 }
 
 document.addEventListener('DOMContentLoaded', () => {
