@@ -20,7 +20,11 @@ export default class ChangePasswordComponent extends Block {
                 NewPasswordInput: new Input({
                     placeholder: 'Новый пароль',
                     class: 'window__input',
-                    name: 'newPassword'
+                    name: 'newPassword',
+                    pattern: '^(?=.*[A-Z])(?=.*\\d).+$',
+                    title: 'Должна быть хотя бы одна цифра и заглавная латинская буква, не менее 8 символов',
+                    min: 8,
+                    max: 40
                 }),
                 ButtonAccept: new Button({
                     label: 'Изменить',

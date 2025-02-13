@@ -16,37 +16,61 @@ export default class EditProfileComponent extends Block {
                     placeholder: 'Имя',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'first_name'
+                    name: 'first_name',
+                    pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
+                    title: 'Допустимы буквы латиницы или кириллицы, первая буква заглавная, можно использовать дефис',
+                    min: 0,
+                    max: 100
                 }),
                 SecondNameInput: new Input({
                     placeholder: 'Фамилия',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'second_name'
+                    name: 'second_name',
+                    pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
+                    title: 'Допустимы буквы латиницы или кириллицы, первая буква заглавная, можно использовать дефис',
+                    min: 0,
+                    max: 100
                 }),
                 DisplayNameInput: new Input({
                     placeholder: 'Отображаемое имя',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'display_name'
+                    name: 'display_name',
+                    pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
+                    title: 'Допустимы буквы латиницы или кириллицы, первая буква заглавная, можно использовать дефис',
+                    min: 0,
+                    max: 100
                 }),
                 LoginInput: new Input({
                     placeholder: 'Логин',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'login'
+                    name: 'login',
+                    pattern: '^(?!\\d+$)[a-zA-Z0-9]+$',
+                    title: 'Допустимы латинские буквы и цифры, не должны быть исключительно одни цифры, не менее 3 символов',
+                    min: 3,
+                    max: 20
                 }),
                 EmailInput: new Input({
                     placeholder: 'Email',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'email'
+                    name: 'email',
+                    pattern: '^[A-Za-z0-9\\-_]+@[A-Za-z0-9\\-_]+\\.[A-Za-z0-9\\-_]+$',
+                    title: 'Используйте латинские буквы и цифры, также дефис и нижнее подчеркивание, обязательно должны быть @ и точка',
+                    min: 0,
+                    max: 100
                 }),
                 PhoneInput: new Input({
                     placeholder: 'Телефон',
                     class: 'window__input',
                     textType: 'text',
-                    name: 'phone'
+                    name: 'phone',
+                    pattern: '^\\+?\\d+$',
+                    title: 'Используйте любые цифры, может быть + в начале, от 10 до 15 символов',
+                    min: 10,
+                    max: 15
                 }),
                 ButtonAccept: new Button({
                     label: 'Редактировать',
