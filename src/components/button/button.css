@@ -1,12 +1,12 @@
 .button {
-    background-color: var(--primary-button-bg);
-    min-width: 140px;
-    height: 50px;
-    border-radius: 5px;
-    padding: 0 10px;
-    color: var(--primary-text);
-    font-size: 17px;
-    border: none;
-    font-family: Inter, sans-serif;
-    cursor: pointer;
+  background-color: var(--primary-button-bg);
+  min-width: 140px;
+  height: 50px;
+  border-radius: 5px;
+  padding: 0 10px;
+  color: var(--primary-text);
+  font-size: 17px;
+  border: none;
+  font-family: Inter, sans-serif;
+  cursor: pointer;
 }

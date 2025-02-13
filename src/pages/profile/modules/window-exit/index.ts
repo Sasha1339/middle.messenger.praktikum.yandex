@@ -1,1 +1,1 @@
-export { default as WindowExit } from './window-exit.hbs?raw'
+export { default as WindowExit } from './window-exit.hbs?raw';

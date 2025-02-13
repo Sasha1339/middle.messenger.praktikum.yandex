@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "ignoreFiles": [
+    "node_modules/**/*",
+    "src/style.css"
+  ],
+  "rules": {
+    "color-no-invalid-hex": true,
+    "block-no-empty": true,
+    "selector-class-pattern": null
+  }
+}

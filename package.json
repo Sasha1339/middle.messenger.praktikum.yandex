@@ -10,7 +10,12 @@
     "dev": "vite",
     "start": "vite build; node server.cjs",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "npx tsc --noEmit && npx eslint . --ext .ts && npx stylelint \"**/*.css\"",
+    "lint:es": "eslint . --ext .ts",
+    "lint:es:fix": "eslint . --ext .ts --fix",
+    "lint:style": "stylelint \"**/*.css\"",
+    "lint:style:fix": "stylelint \"**/*.css\" --fix"
   },
   "dependencies": {
     "express": "^4.21.2",
@@ -18,7 +23,16 @@
     "uuid": "^11.0.5"
   },
   "devDependencies": {
+    "globals": "^15.15.0",
     "typescript": "~5.7.2",
-    "vite": "^6.1.0"
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^8.57.1",
+    "vite": "^6.1.0",
+    "prettier": "^2.7.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "stylelint": "^14.13.0",
+    "stylelint-config-standard": "^28.0.0"
   }
 }

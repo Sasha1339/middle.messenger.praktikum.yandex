@@ -1,62 +1,60 @@
 .register {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }
 
 .register__title {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 .register__panel {
-    display: flex;
-    margin: auto;
-    height: 60vh;
-    width: 25vw;
-    flex-direction: column;
-    justify-content: space-between;
-
-    background-color: var(--bg-modal-opacity-window);
-    backdrop-filter: blur(7px);
-    align-items: center;
-    font-family: Inter, sans-serif;
-    padding: 50px 0;
-    color: var(--primary-text);
-    cursor: pointer;
-
-    border-radius: 20px;
+  display: flex;
+  margin: auto;
+  height: 60vh;
+  width: 25vw;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-modal-opacity-window);
+  backdrop-filter: blur(7px);
+  align-items: center;
+  font-family: Inter, sans-serif;
+  padding: 50px 0;
+  color: var(--primary-text);
+  cursor: pointer;
+  border-radius: 20px;
 }
 
-.register__inputs{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.register__inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .register__auth {
-    color: var(--primary-text);
-    font-family: Inter, sans-serif;
-    font-size: 15px;
-    margin-top: 15px;
+  color: var(--primary-text);
+  font-family: Inter, sans-serif;
+  font-size: 15px;
+  margin-top: 15px;
 }
 
 .register__form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    width: 80%;
-    height: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  height: 90%;
 }
 
 .register__input {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .register__button {
-    width: 100%;
+  width: 100%;
 }

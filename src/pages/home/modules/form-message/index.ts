@@ -1,1 +1,1 @@
-export { default as FormMessage } from './form-message.hbs?raw'
+export { default as FormMessage } from './form-message.hbs?raw';

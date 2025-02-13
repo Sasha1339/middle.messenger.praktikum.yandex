@@ -1,3 +1,3 @@
-import './clickable-text.css'
+import './clickable-text.css';
 
-export { default as clickableText } from './clickable-text.hbs?raw'
+export { default as clickableText } from './clickable-text.hbs?raw';
