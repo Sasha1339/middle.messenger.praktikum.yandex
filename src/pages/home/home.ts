@@ -165,6 +165,9 @@ export default class HomeComponent extends Block {
 
   outputData(event: SubmitEvent): void {
     const container = new FormContainer(event.target as HTMLFormElement);
-    console.log(container);
+    const input = ((event.target as HTMLFormElement).querySelector('[name="message"]') as HTMLInputElement).value;
+    if (input !== '' && input.replaceAll(' ', '').length > 0) {
+      console.log(container);
+    }
   }
 }
