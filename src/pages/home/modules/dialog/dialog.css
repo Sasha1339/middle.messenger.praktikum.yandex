@@ -9,6 +9,10 @@
   user-select: none;
 }
 
+.dialog_selected {
+  background-color: var(--bg-modal-opacity-window-selected) !important;
+}
+
 .dialog__img {
   display: flex;
   justify-content: center;

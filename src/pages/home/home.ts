@@ -151,7 +151,9 @@ export default class HomeComponent extends Block {
           }
         }
       }),
-      DialogList: new DialogListComponent(dialogs),
+      DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
+        this.openDialog(element);
+      }),
       settings: settings,
       add: add,
       arrow: arrow,
@@ -170,4 +172,15 @@ export default class HomeComponent extends Block {
       console.log(container);
     }
   }
+
+  openDialog(element: HTMLElement): void {
+    this.resetAndEditStyleDialogPanel(element);
+  }
+
+  resetAndEditStyleDialogPanel(element: HTMLElement): void {
+    const dialogs = this._element.querySelectorAll(`.dialog`);
+    dialogs.forEach((e) => e.classList.remove('dialog_selected'));
+    element.classList.add('dialog_selected');
+  }
+
 }
