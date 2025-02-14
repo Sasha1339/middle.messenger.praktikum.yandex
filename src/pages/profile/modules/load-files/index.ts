@@ -1,3 +1,3 @@
-import './load-files.css'
+import './load-files.css';
 
-export { default as LoadFileWindow } from './load-files.hbs?raw'
+export { default as LoadFileWindow } from './load-files.hbs?raw';

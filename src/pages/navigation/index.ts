@@ -1,3 +1,3 @@
-import './navigation.css'
+import './navigation.css';
 
-export {default as NavigationPage} from './navigation.hbs?raw'
+export { default as NavigationPage } from './navigation.hbs?raw';

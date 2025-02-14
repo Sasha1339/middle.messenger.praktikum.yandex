@@ -39,22 +39,22 @@
             </dl>
 
             <div class="profile__buttons">
-                {{> button label='Изменить данные' class='profile__edit'}}
-                {{> button label='Изменить пароль' class='profile__edit-password'}}
-                {{> button label='Выйти' class='profile__exit'}}
+                {{{ ButtonEditProfile }}}
+                {{{ ButtonEditPassword }}}
+                {{{ ButtonExit }}}
             </div>
         </article>
     </section>
     <div class="profile__windows_disabled window__load-files">
-        {{> LoadFileWindow }}
+        {{{ LoadFileWindow }}}
     </div>
     <div class="profile__windows_disabled window__exit">
-        {{> WindowExit }}
+        {{{ WindowExit }}}
     </div>
     <div class="profile__windows_disabled window__edit">
-        {{> ProfileEditWindow }}
+        {{{ ProfileEditWindow }}}
     </div>
     <div class="profile__windows_disabled window__edit-password">
-        {{> PasswordChangeWindow }}
+        {{{ PasswordChangeWindow }}}
     </div>
 </main>

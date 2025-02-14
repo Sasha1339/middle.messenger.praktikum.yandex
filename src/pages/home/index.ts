@@ -1,4 +1,4 @@
-import './home.css'
+import './home.css';
 import './home.ts';
 
-export { default as HomePage } from './home.hbs?raw'
+export { default as HomePage } from './home.hbs?raw';

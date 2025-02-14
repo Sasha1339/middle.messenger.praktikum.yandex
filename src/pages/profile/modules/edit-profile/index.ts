@@ -1,3 +1,3 @@
-import './edit-profile.css'
+import './edit-profile.css';
 
-export { default as ProfileEditWindow } from './edit-profile.hbs?raw'
+export { default as ProfileEditWindow } from './edit-profile.hbs?raw';
