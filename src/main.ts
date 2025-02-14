@@ -41,7 +41,7 @@ function render(element: HTMLElement, block: Block) {
 
 function navigate(page: PageKey) {
     const source = pages[page];
-    const container = document.querySelector('#app')!;
+    const container = document.querySelector('#app') as HTMLElement;
 
     render(container, source());
 }
