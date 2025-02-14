@@ -1,7 +1,7 @@
 export interface DialogModel {
-  image: string;
-  name: string;
-  message: string;
-  lastUpdate: string;
-  countMessages: number | undefined;
+    image: string;
+    name: string;
+    message: string;
+    lastUpdate: string;
+    countMessages: number | undefined;
 }

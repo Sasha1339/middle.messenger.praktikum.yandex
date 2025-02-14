@@ -11,56 +11,56 @@ import ErrorComponent from './pages/error/error.ts';
 type PageKey = keyof typeof pages;
 
 const pages: Record<string, () => Block> = {
-  login: () => {
-    return new LoginComponent();
-  },
-  register: () => {
-    return new RegisterComponent();
-  },
-  home: () => {
-    return new HomeComponent();
-  },
-  error4xx: () => {
-    return new ErrorComponent('4xx');
-  },
-  error5xx: () => {
-    return new ErrorComponent('5xx');
-  },
-  profile: () => {
-    return new ProfileComponent();
-  }
+    login: () => {
+        return new LoginComponent();
+    },
+    register: () => {
+        return new RegisterComponent();
+    },
+    home: () => {
+        return new HomeComponent();
+    },
+    error4xx: () => {
+        return new ErrorComponent('4xx');
+    },
+    error5xx: () => {
+        return new ErrorComponent('5xx');
+    },
+    profile: () => {
+        return new ProfileComponent();
+    }
 };
 
 function render(element: HTMLElement, block: Block) {
-  element.childNodes.forEach((e) => e.remove());
+    element.childNodes.forEach((e) => e.remove());
 
-  element.appendChild(block.getContent());
+    element.appendChild(block.getContent());
 
-  block.dispatchComponentDidMount();
+    block.dispatchComponentDidMount();
 }
 
 function navigate(page: PageKey) {
-  const source = pages[page];
-  const container = document.querySelector('#app')!;
+    const source = pages[page];
+    const container = document.querySelector('#app')!;
 
-  render(container, source());
+    render(container, source());
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.querySelector('#app')!;
+    const container = document.querySelector('#app')!;
 
-  const templateFun = Handlebars.compile(Pages.NavigationPage);
-  container.innerHTML = templateFun({});
+    const templateFun = Handlebars.compile(Pages.NavigationPage);
+    container.innerHTML = templateFun({});
 });
 
 document.addEventListener('click', (event) => {
-  const { target } = event;
-  if (target instanceof HTMLElement) {
-    const page = target.getAttribute('page');
-    if (page && page in pages) {
-      navigate(page);
-      event.preventDefault();
-      event.stopImmediatePropagation();
+    const { target } = event;
+    if (target instanceof HTMLElement) {
+        const page = target.getAttribute('page');
+        if (page && page in pages) {
+            navigate(page);
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
     }
-  }
 });

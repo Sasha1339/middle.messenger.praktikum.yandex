@@ -17,7 +17,16 @@
         {{{ DialogList }}}
     </aside>
     <section class="home__chat">
-        <div class="home__chat-messages"></div>
+        {{#if isSelected}}
+            <div class="home__chat-messages">
+                {{{ChatList}}}
+            </div>
+        {{else}}
+            <div class="home__chat-no-messages">
+                <div class="home__select-chat">Выберите диалог для сообщения</div>
+            </div>
+        {{/if}}
+
         {{{ FormMessage }}}
     </section>
 </main>

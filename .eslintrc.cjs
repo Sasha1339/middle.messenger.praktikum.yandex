@@ -31,7 +31,7 @@ module.exports = {
           "error",
           {
             "printWidth": 120,
-            "tabWidth": 2,
+            "tabWidth": 4,
             "semi": true,
             "singleQuote": true,
             "trailingComma": "none",
