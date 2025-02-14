@@ -134,7 +134,7 @@ export default class Block {
         return this.element;
     }
 
-    componentDidMount(oldProps?: string) {}
+    componentDidMount() {}
 
     dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);

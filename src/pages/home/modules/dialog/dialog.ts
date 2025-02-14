@@ -11,7 +11,7 @@ export default class DialogComponent extends Block {
             lastUpdate: dialog.lastUpdate,
             countMessages: dialog.countMessages,
             events: {
-                click: (event: Event) => {
+                click: () => {
                     clickEvent(this._element);
                 }
             }
