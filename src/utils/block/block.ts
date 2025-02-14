@@ -11,7 +11,7 @@ export default class Block {
     };
 
     _element!: HTMLElement;
-    _props: object;
+    _props: { events?: Record<string, () => void> };
     _eventBus: EventBus;
     _id: string = '';
     _children: Record<string, Block> = {};
@@ -144,7 +144,7 @@ export default class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDU);
     }
 
-    _componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>) {
+    _componentDidUpdate(oldProps: Record<string, unknown>, newProps: Record<string, unknown>): void {
         const response = this.componentDidUpdate(oldProps, newProps);
         if (!response) {
             return;
@@ -174,17 +174,14 @@ export default class Block {
         return !this._isEqual(oldProps, newProps);
     }
 
-    _makePropsProxy(props: object): object {
-        //const self = this;
-
+    _makePropsProxy(props: object): { events?: Record<string, () => void> } {
         return new Proxy(props, {
-            get(target: any, prop: string) {
+            get(target: Record<string, unknown>, prop: string) {
                 const value = target[prop];
                 return typeof value === 'function' ? value.bind(target) : value;
             },
-            set(target, prop, value) {
+            set(target: Record<string, unknown>, prop: string, value) {
                 target[prop] = value;
-                //self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target);
                 return true;
             },
             deleteProperty() {
@@ -194,7 +191,6 @@ export default class Block {
     }
 
     _addEvents() {
-        //@ts-ignore
         const { events } = this._props;
 
         if (events) {
@@ -205,7 +201,6 @@ export default class Block {
     }
 
     _removeEvents() {
-        //@ts-ignore
         const { events } = this._props;
 
         if (events) {
