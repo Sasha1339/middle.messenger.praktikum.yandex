@@ -1,83 +1,64 @@
-import './style.css'
-import avatar from './assets/image/avatar.jpg';
-import search from './assets/svg/search.svg';
-import settings from './assets/svg/settings.svg';
-import add from './assets/svg/add.svg';
-import arrow from './assets/svg/arrow.svg';
-import {setup as setupProfile} from './pages/profile/profile.ts';
-import * as Pages from './pages'
-import Handlebars from "handlebars";
-import * as Components from "./components";
-
-const dialogs = [
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: '1 окт 2021', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4},
-    {image: avatar, name: 'Artur Pirazhkov', message: 'Hi zyabl!', lastUpdate: 'Пт', countMessages: 4}
-]
+import './style.css';
+import ProfileComponent from './pages/profile/profile.ts';
+import * as Pages from './pages';
+import Handlebars from 'handlebars';
+import LoginComponent from './pages/login/login.ts';
+import Block from './utils/block/block.ts';
+import RegisterComponent from './pages/register/register.ts';
+import HomeComponent from './pages/home/home.ts';
+import ErrorComponent from './pages/error/error.ts';
 
 type PageKey = keyof typeof pages;
 
-const pages = {
-    'profile': [Pages.ProfilePage, { avatar: avatar, arrow: arrow}],
-    'nav': [Pages.NavigationPage],
-    'home': [Pages.HomePage, {
-        partialName: 'home',
-        dialogs: dialogs,
-        search: search,
-        arrow: arrow,
-        add: add,
-        settings: settings
-    }],
-    'login': [Pages.LoginPage],
-    'register': [Pages.RegisterPage],
-    'error4xx': [Pages.ErrorPage, {errorType: 'Page4xx'}],
-    'error5xx': [Pages.ErrorPage, {errorType: 'Page5xx'}],
-}
-
-const setupPage = (page: PageKey) => {
-    switch (page) {
-        case 'profile':
-            setupProfile();
-            break;
+const pages: Record<string, () => Block> = {
+    login: () => {
+        return new LoginComponent();
+    },
+    register: () => {
+        return new RegisterComponent();
+    },
+    home: () => {
+        return new HomeComponent();
+    },
+    error4xx: () => {
+        return new ErrorComponent('4xx');
+    },
+    error5xx: () => {
+        return new ErrorComponent('5xx');
+    },
+    profile: () => {
+        return new ProfileComponent();
     }
-}
+};
 
-Object.entries(Components).forEach(([name, template]) => {
-    Handlebars.registerPartial(name, template);
-})
+function render(element: HTMLElement, block: Block) {
+    element.childNodes.forEach((e) => e.remove());
+
+    element.appendChild(block.getContent());
+
+    block.dispatchComponentDidMount();
+}
 
 function navigate(page: PageKey) {
-    const [source, context] = pages[page];
+    const source = pages[page];
     const container = document.querySelector('#app')!;
 
-    const templateFun = Handlebars.compile(source);
-    container.innerHTML = templateFun(context);
-    setupPage(page);
+    render(container, source());
 }
 
-document.addEventListener('DOMContentLoaded', () => {navigate('nav')})
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('#app')!;
 
-document.addEventListener('click', event => {
-    const {target} = event;
+    const templateFun = Handlebars.compile(Pages.NavigationPage);
+    container.innerHTML = templateFun({});
+});
+
+document.addEventListener('click', (event) => {
+    const { target } = event;
     if (target instanceof HTMLElement) {
-        const page = target.getAttribute('page')
+        const page = target.getAttribute('page');
         if (page && page in pages) {
-            navigate(page as PageKey);
+            navigate(page);
             event.preventDefault();
             event.stopImmediatePropagation();
         }

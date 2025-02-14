@@ -1,20 +1,6 @@
 <main class="register">
     <div class="register__panel">
         <h1 class="register__title">Регистрация</h1>
-        <form class="register__form">
-            <div class="register__inputs">
-                {{> input placeholder='Имя' class='register__input' textType='text' name='first_name'}}
-                {{> input placeholder='Фамилия' class='register__input' textType='text' name='second_name'}}
-                {{> input placeholder='Логин' class='register__input' textType='text' name='login'}}
-                {{> input placeholder='Email' class='register__input' textType='text' name='email'}}
-                {{> input placeholder='Телефон' class='register__input' textType='text' name='phone'}}
-                {{> input placeholder='Пароль' class='register__input' textType='text' name='password'}}
-                {{> input placeholder='Пароль (еще раз)' class='register__input' textType='text'}}
-            </div>
-            <div class="register__inputs">
-                {{> button label='Зарегестироваться' class='register__button'}}
-                <p class="register__auth" href="#">Войти</p>
-            </div>
-        </form>
+        {{{ Form }}}
     </div>
 </main>
