@@ -23,6 +23,7 @@ module.exports = {
         "@typescript-eslint/no-unsafe-return": "off",
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/ban-ts-comment": "error",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-this-alias": "off",
         "@typescript-eslint/prefer-promise-reject-errors": "off",
