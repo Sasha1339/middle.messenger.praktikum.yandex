@@ -5,7 +5,7 @@ export default class EventBus {
         this.listeners = new Map();
     }
 
-    on(event: string, callback: any): void {
+    on(event: string, callback: unknown): void {
         if (!this.listeners.has(event)) {
             this.listeners.set(event, []);
         }
@@ -13,7 +13,7 @@ export default class EventBus {
         this.listeners.get(event)!.push(callback);
     }
 
-    off(event: string, callback: any): void {
+    off(event: string, callback: unknown): void {
         if (!this.listeners.has(event)) {
             throw new Error(`Нет события: ${event}`);
         }
@@ -24,7 +24,7 @@ export default class EventBus {
         );
     }
 
-    emit(event: string, ...args: any[]) {
+    emit(event: string, ...args: unknown[]) {
         if (!this.listeners.has(event)) {
             throw new Error(`Нет события: ${event}`);
         }

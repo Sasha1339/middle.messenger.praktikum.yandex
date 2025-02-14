@@ -19,7 +19,7 @@
     "noUncheckedSideEffectImports": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "sourceMap": true,
     "strictNullChecks": true
   },
