@@ -3,12 +3,15 @@
   --primary-button-bg: #4E1E6D;
   --secondary-button-bg: red;
   --primary-border: white;
+  --invalid-border: red;
   --primary-text: white;
+  --invalid-text: red;
   --secondary-text: #999999;
   --bg-couner-message: rgba(255, 255, 255, 0.5);
   --background-opacity-button: rgba(239, 239, 239, 0.2);
   --background-modal-window: rgba(0, 0, 0, 0.7);
   --bg-modal-opacity-window: rgba(255, 255, 255, 0.2);
+  --bg-modal-opacity-window-selected: rgba(208, 0, 255, 0.2);
 }
 
 body {

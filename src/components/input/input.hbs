@@ -1,5 +1,14 @@
 {{#if textType}}
-    <input class="input {{class}}" name="{{name}}" type="text" placeholder="{{placeholder}}"/>
+    {{#if pattern}}
+        <input required class="input {{class}}" name="{{name}}" type="text" placeholder="{{placeholder}}" pattern="{{pattern}}" minlength="{{min}}" maxlength="{{max}}" title="{{title}}"/>
+    {{else}}
+        <input required class="input {{class}}" name="{{name}}" type="text" placeholder="{{placeholder}}"/>
+    {{/if}}
+
 {{else}}
-    <input class="input {{class}}" name="{{name}}" type="password" placeholder="{{placeholder}}"/>
+    {{#if pattern}}
+        <input required class="input {{class}}" name="{{name}}" type="password" placeholder="{{placeholder}}" pattern="{{pattern}}" minlength="{{min}}" maxlength="{{max}}" title="{{title}}"/>
+    {{else}}
+        <input required class="input {{class}}" name="{{name}}" type="password" placeholder="{{placeholder}}"/>
+    {{/if}}
 {{/if}}

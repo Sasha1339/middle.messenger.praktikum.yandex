@@ -1,3 +1,3 @@
-import './input.css'
+import './input.css';
 
-export { default as input } from './input.hbs?raw'
+export { default as input } from './input.hbs?raw';
