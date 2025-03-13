@@ -5,7 +5,7 @@ import Input from '../../components/input/input.ts';
 import ClickableText from '../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../components/form/form.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
-import {Router} from "../../utils/routing/router.ts";
+import { Router } from '../../utils/routing/router.ts';
 
 export default class RegisterComponent extends Block {
     router: Router;
