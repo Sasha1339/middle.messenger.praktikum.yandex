@@ -239,7 +239,7 @@ export default class Block {
     }
 
     show() {
-        this.getContent().style.display = 'block';
+        this.getContent().style.display = '';
     }
 
     hide() {
