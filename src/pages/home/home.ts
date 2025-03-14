@@ -11,6 +11,8 @@ import InputMessageComponent from './modules/input-message/input-message.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
 import ChatListComponent from './modules/chat-list/chat-list.ts';
 import { MessageModel } from './utils/message-model.ts';
+import { Router } from '../../utils/routing/router.ts';
+import ButtonImage from '../../components/button-image/button-image.ts';
 
 const dialogs = [
     {
@@ -257,6 +259,8 @@ const currentChat: MessageModel[] = [
 ];
 
 export default class HomeComponent extends Block {
+    router: Router;
+
     constructor() {
         super({
             FormMessage: new FormMessageComponent({
@@ -271,11 +275,26 @@ export default class HomeComponent extends Block {
             DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
                 this.openDialog(element);
             }),
+            ButtonImage: new ButtonImage({
+                class: 'home__title-settings',
+                class_svg: 'svg__settings',
+                alt: 'Вернуться на страницу чатов',
+                src: settings,
+                events: {
+                    click: () => {
+                        this.router.go('/settings');
+                    }
+                }
+            }),
             ChatList: new ChatListComponent(currentChat),
-            settings: settings,
             add: add,
             arrow: arrow,
             search: search
+        });
+        this.router = new Router('#app');
+        const buttonSettings = document.querySelector('.home__title-settings');
+        buttonSettings?.addEventListener('click', () => {
+            this.router.go('/settings');
         });
     }
 

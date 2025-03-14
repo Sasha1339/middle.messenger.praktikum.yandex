@@ -7,8 +7,12 @@ import LoadFilesComponent from './modules/load-files/load-files.ts';
 import WindowExitComponent from './modules/window-exit/window-exit.ts';
 import EditProfileComponent from './modules/edit-profile/edit-profile.ts';
 import ChangePasswordComponent from './modules/change-password/change-password.ts';
+import { Router } from '../../utils/routing/router.ts';
+import ButtonImage from '../../components/button-image/button-image.ts';
 
 export default class ProfileComponent extends Block {
+    router: Router;
+
     constructor() {
         super({
             LoadFileWindow: new LoadFilesComponent({
@@ -19,6 +23,7 @@ export default class ProfileComponent extends Block {
             WindowExit: new WindowExitComponent({
                 clickOnExit: () => {
                     this.closeWindow('window__exit');
+                    this.router.go('/');
                 },
                 clickOnCancel: () => {
                     this.closeWindow('window__exit');
@@ -67,14 +72,26 @@ export default class ProfileComponent extends Block {
                     }
                 }
             }),
+            ButtonImage: new ButtonImage({
+                class: 'profile__back',
+                class_svg: 'svg__arrow',
+                alt: 'Вернуться на страницу чатов',
+                src: arrow,
+                events: {
+                    click: () => {
+                        this.router.back();
+                    }
+                }
+            }),
             events: {
                 click: (event: MouseEvent) => {
                     this.findImageElement(event);
                 }
             },
-            arrow: arrow,
             avatar: avatar
         });
+
+        this.router = new Router('#app');
     }
 
     render(): string {

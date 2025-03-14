@@ -11,6 +11,7 @@ export default class EditProfileComponent extends Block {
         super({
             Form: new FormComponent({
                 class: 'window',
+                id: 'editFormData',
                 FirstNameInput: new Input({
                     placeholder: 'Имя',
                     class: 'window__input',

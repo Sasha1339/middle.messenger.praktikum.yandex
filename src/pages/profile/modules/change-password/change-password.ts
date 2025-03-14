@@ -11,6 +11,7 @@ export default class ChangePasswordComponent extends Block {
         super({
             Form: new FormComponent({
                 class: 'window',
+                id: 'changePasswordFormFormData',
                 OldPasswordInput: new Input({
                     placeholder: 'Старый пароль',
                     class: 'window__input',
