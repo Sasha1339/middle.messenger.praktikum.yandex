@@ -1,9 +1,9 @@
 import Block from '../../../../utils/block/block.ts';
-import { MessageModel } from '../../utils/message-model.ts';
+import { Model } from '../../utils/model.ts';
 import { Message } from './index.ts';
 
 export default class MessageComponent extends Block {
-    constructor(message: MessageModel) {
+    constructor(message: Model) {
         super({
             message: message.message,
             side: message.side

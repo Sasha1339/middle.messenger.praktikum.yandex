@@ -2,264 +2,29 @@ import Block from '../../utils/block/block.ts';
 import { HomePage } from './index.ts';
 import search from '../../assets/svg/search.svg';
 import settings from '../../assets/svg/settings.svg';
+import newChat from '../../assets/svg/new_chat.svg';
 import add from '../../assets/svg/add.svg';
 import arrow from '../../assets/svg/arrow.svg';
-import avatar from '../../assets/image/avatar.jpg';
 import DialogListComponent from './modules/dialog-list/dialog-list.ts';
 import FormMessageComponent from './modules/form-message/form-message.ts';
 import InputMessageComponent from './modules/input-message/input-message.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
 import ChatListComponent from './modules/chat-list/chat-list.ts';
-import { MessageModel } from './utils/message-model.ts';
+import { ChatModel } from './utils/model.ts';
 import { Router } from '../../utils/routing/router.ts';
 import ButtonImage from '../../components/button-image/button-image.ts';
+import { HomeApi } from '../../service/api/home-api.ts';
+import CreateChat from './modules/create-chat/create-chat.ts';
 
-const dialogs = [
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: '1 окт 2021',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: undefined
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    },
-    {
-        image: avatar,
-        name: 'Artur Pirazhkov',
-        message: 'Hi zyabl!',
-        lastUpdate: 'Пт',
-        countMessages: 4
-    }
-];
+let dialogs: ChatModel[] = [];
 
-const currentChat: MessageModel[] = [
-    {
-        message: 'Привет как дела?',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Привет, я отдыхаю на море, извини что не мог ответить по смс, у меня роуминг',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'через неделю планирую вернуться, не скучай',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'О супер, как раз приезжаешь на мой день рождение!',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Я пригласил порядка 15 человек, будет небольшая туса)',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Будет купаться в бассейне и жарить шашлык',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Ого! круто, тогда обязательно приеду!',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Давай жду!',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Привет как дела?',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Привет, я отдыхаю на море, извини что не мог ответить по смс, у меня роуминг',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'через неделю планирую вернуться, не скучай',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'О супер, как раз приезжаешь на мой день рождение!',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Я пригласил порядка 15 человек, будет небольшая туса)',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Будет купаться в бассейне и жарить шашлык',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Ого! круто, тогда обязательно приеду!',
-        file: '',
-        side: 'companion',
-        time: '',
-        date: ''
-    },
-    {
-        message: 'Давай жду!',
-        file: '',
-        side: 'me',
-        time: '',
-        date: ''
-    }
-];
+let chats: { dialogs: ChatModel[] } = { dialogs: [] };
+
+const currentChat: ChatModel[] = [];
 
 export default class HomeComponent extends Block {
     router: Router;
+    private _serviceHomeApi?: HomeApi;
 
     constructor() {
         super({
@@ -275,6 +40,17 @@ export default class HomeComponent extends Block {
             DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
                 this.openDialog(element);
             }),
+            ButtonCreateChat: new ButtonImage({
+                class: 'home__title-settings',
+                class_svg: 'svg__settings',
+                alt: 'Создать чат',
+                src: newChat,
+                events: {
+                    click: () => {
+                        this.openWindow('window__create-chat');
+                    }
+                }
+            }),
             ButtonImage: new ButtonImage({
                 class: 'home__title-settings',
                 class_svg: 'svg__settings',
@@ -286,16 +62,33 @@ export default class HomeComponent extends Block {
                     }
                 }
             }),
+            CreateChatWindow: new CreateChat({
+                clickOnAccept: () => {
+                    this.closeWindow('window__create-chat');
+                },
+                clickOnCancel: () => {
+                    this.closeWindow('window__create-chat');
+                }
+            }),
             ChatList: new ChatListComponent(currentChat),
             add: add,
             arrow: arrow,
             search: search
         });
         this.router = new Router('#app');
+
+        if (!this._serviceHomeApi) {
+            this._serviceHomeApi = new HomeApi();
+        }
+
         const buttonSettings = document.querySelector('.home__title-settings');
         buttonSettings?.addEventListener('click', () => {
             this.router.go('/settings');
         });
+    }
+
+    override isLoaded() {
+        this.loadDialogs();
     }
 
     render(): string {
@@ -329,5 +122,40 @@ export default class HomeComponent extends Block {
         dialogs.forEach((e) => e.classList.remove('dialog_selected'));
         element.classList.add('dialog_selected');
         this.setProps({ isSelected: true });
+    }
+
+    loadDialogs() {
+        if (!this._serviceHomeApi) {
+            this._serviceHomeApi = new HomeApi();
+        }
+        void this._serviceHomeApi.request().then((response) => {
+            if (response.status === 200) {
+                dialogs = JSON.parse(response.response);
+                this.setChildren({
+                    DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
+                        this.openDialog(element);
+                    })
+                });
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
+    }
+
+    openWindow(cssClass: string): void {
+        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
+        window?.classList.remove('home__windows_disabled');
+        window?.classList.add('home__windows_enabled');
+    }
+
+    closeWindow(cssClass: string): void {
+        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
+        window?.classList.add('home__windows_disabled');
+        window?.classList.remove('home__windows_enabled');
+    }
+
+    show() {
+        super.show();
+        this.loadDialogs();
     }
 }

@@ -6,9 +6,11 @@ import ClickableText from '../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../components/form/form.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
 import { Router } from '../../utils/routing/router.ts';
+import { LoginApi } from '../../service/api/login-api.ts';
 
 export default class LoginComponent extends Block {
     router: Router;
+    private _serviceApi: LoginApi = new LoginApi();
 
     constructor() {
         super({
@@ -49,7 +51,6 @@ export default class LoginComponent extends Block {
                     submit: (event: SubmitEvent) => {
                         event.preventDefault();
                         this.outputData(event);
-                        this.router.go('/messenger');
                     }
                 }
             })
@@ -63,6 +64,12 @@ export default class LoginComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        void this._serviceApi.create(container.fields).then((response) => {
+            if (response.status === 200) {
+                this.router.go('/messenger');
+            } else if (response.status === 400) {
+                this.router.go('/messenger');
+            }
+        });
     }
 }

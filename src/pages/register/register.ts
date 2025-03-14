@@ -6,9 +6,11 @@ import ClickableText from '../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../components/form/form.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
 import { Router } from '../../utils/routing/router.ts';
+import { RegisterApi } from '../../service/api/register-api.ts';
 
 export default class RegisterComponent extends Block {
     router: Router;
+    private _serviceApi: RegisterApi = new RegisterApi();
 
     constructor() {
         super({
@@ -101,7 +103,6 @@ export default class RegisterComponent extends Block {
                         event.preventDefault();
                         this.onValidate();
                         this.outputData(event);
-                        this.router.go('/');
                     }
                 }
             })
@@ -116,7 +117,11 @@ export default class RegisterComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        void this._serviceApi.create(container.fields).then((response) => {
+            if (response.status === 200) {
+                this.router.go('/messenger');
+            }
+        });
     }
 
     onValidate(): void {

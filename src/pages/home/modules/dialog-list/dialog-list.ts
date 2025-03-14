@@ -1,9 +1,9 @@
 import Block from '../../../../utils/block/block.ts';
-import { DialogModel } from '../../utils/dialog-model.ts';
 import DialogComponent from '../dialog/dialog.ts';
+import { ChatModel } from '../../utils/model.ts';
 
 export default class DialogListComponent extends Block {
-    constructor(allDialogs: DialogModel[], clickEvent: (element: HTMLElement) => void) {
+    constructor(allDialogs: ChatModel[], clickEvent: (element: HTMLElement) => void) {
         super(
             Object.fromEntries(
                 allDialogs.map((item, index) => [`Dialog${index}`, new DialogComponent(item, clickEvent)])

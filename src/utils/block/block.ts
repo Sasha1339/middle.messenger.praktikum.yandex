@@ -7,7 +7,8 @@ export default class Block {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
-        FLOW_RENDER: 'flow:render'
+        FLOW_RENDER: 'flow:render',
+        COMPONENT_LOADED: 'flow:component-loaded'
     };
 
     _element!: HTMLElement;
@@ -80,7 +81,10 @@ export default class Block {
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on(Block.EVENTS.COMPONENT_LOADED, this.isLoaded.bind(this));
     }
+
+    isLoaded(): void {}
 
     init() {
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -124,6 +128,7 @@ export default class Block {
 
         this._removeEvents();
         this._addEvents();
+        this._eventBus.emit(Block.EVENTS.COMPONENT_LOADED);
     }
 
     render(): string {
