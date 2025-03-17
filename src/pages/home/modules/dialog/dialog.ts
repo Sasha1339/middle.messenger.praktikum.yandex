@@ -2,10 +2,27 @@ import { Dialog } from './index.ts';
 import Block from '../../../../utils/block/block.ts';
 import { ChatModel } from '../../utils/model.ts';
 import avatar from '../../../../assets/image/avatar.jpg';
+import ButtonImage from '../../../../components/button-image/button-image.ts';
+import deleteChat from '../../../../assets/svg/card.svg';
 
 export default class DialogComponent extends Block {
-    constructor(dialog: ChatModel, clickEvent: (element: HTMLElement) => void) {
+    constructor(
+        dialog: ChatModel,
+        clickEvent: (element: HTMLElement) => void,
+        deleteEvent: (chatID: number) => void
+    ) {
         super({
+            ButtonDelete: new ButtonImage({
+                class: 'home__title-settings',
+                class_svg: 'svg__settings',
+                alt: 'Удалить чат',
+                src: deleteChat,
+                events: {
+                    click: () => {
+                        deleteEvent(dialog.id);
+                    }
+                }
+            }),
             avatar: dialog.avatar ?? avatar,
             title: dialog.title,
             lastMessage: dialog.last_message,

@@ -7,9 +7,14 @@ export class LoginApi extends BaseApi {
     create(data: Record<string, string>) {
         return this._registerApi.post('auth/signin', {
             headers: {
+                credentials: 'include',
                 'Content-Type': 'application/json'
             },
             data: data
         });
+    }
+
+    logout() {
+        return this._registerApi.post('auth/logout', {cookies: false});
     }
 }

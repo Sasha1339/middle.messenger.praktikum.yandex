@@ -5,6 +5,7 @@ interface Options {
     headers?: Record<string, string>;
     method?: METHODS;
     data?: Record<string, string>;
+    cookies?: boolean;
 }
 
 function queryStringify(data: Record<string, string>) {

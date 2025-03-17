@@ -16,6 +16,7 @@ export default class Block {
     _eventBus: EventBus;
     _id: string = '';
     _children: Record<string, Block> = {};
+    _isLoaded: boolean = false;
 
     constructor(propsAndChildren: Record<string, unknown> = {}) {
         const { children, props } = this._getChildren(propsAndChildren);
@@ -50,26 +51,6 @@ export default class Block {
         });
 
         return { children, props };
-    }
-
-    compile(template: string, props: Record<string, unknown>) {
-        const propsAndStubs = { ...props };
-
-        Object.entries(this._children).forEach(([key, child]) => {
-            propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
-        });
-
-        const fragment = this._createDocumentElement('template');
-
-        fragment.innerHTML = Handlebars.compile(template, propsAndStubs)({});
-
-        Object.values(this._children).forEach((child) => {
-            const stub = fragment.querySelector(`[data-id="${child.id}"]`) as HTMLElement;
-
-            stub.replaceWith(child.getContent());
-        });
-
-        return fragment;
     }
 
     eventBus(): EventBus {
@@ -128,7 +109,11 @@ export default class Block {
 
         this._removeEvents();
         this._addEvents();
-        this._eventBus.emit(Block.EVENTS.COMPONENT_LOADED);
+
+        if (!this._isLoaded) {
+            this._isLoaded = true;
+            this._eventBus.emit(Block.EVENTS.COMPONENT_LOADED);
+        }
     }
 
     render(): string {
@@ -154,6 +139,7 @@ export default class Block {
         if (!response) {
             return;
         }
+
         this._render();
     }
 

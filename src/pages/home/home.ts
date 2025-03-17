@@ -15,16 +15,16 @@ import { Router } from '../../utils/routing/router.ts';
 import ButtonImage from '../../components/button-image/button-image.ts';
 import { HomeApi } from '../../service/api/home-api.ts';
 import CreateChat from './modules/create-chat/create-chat.ts';
+import DeleteChat from './modules/delete-chat/delete-chat.ts';
 
 let dialogs: ChatModel[] = [];
-
-let chats: { dialogs: ChatModel[] } = { dialogs: [] };
 
 const currentChat: ChatModel[] = [];
 
 export default class HomeComponent extends Block {
     router: Router;
     private _serviceHomeApi?: HomeApi;
+    private _deletedChat?: { chatID: number };
 
     constructor() {
         super({
@@ -37,9 +37,15 @@ export default class HomeComponent extends Block {
                     }
                 }
             }),
-            DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
-                this.openDialog(element);
-            }),
+            DialogList: new DialogListComponent(
+                dialogs,
+                (element: HTMLElement) => {
+                    this.openDialog(element);
+                },
+                (chatID: number) => {
+                    this.deleteDialog(chatID);
+                }
+            ),
             ButtonCreateChat: new ButtonImage({
                 class: 'home__title-settings',
                 class_svg: 'svg__settings',
@@ -47,14 +53,14 @@ export default class HomeComponent extends Block {
                 src: newChat,
                 events: {
                     click: () => {
-                        this.openWindow('window__create-chat');
+                        this.openWindowCreateChat('window__create-chat');
                     }
                 }
             }),
-            ButtonImage: new ButtonImage({
+            ButtonSettings: new ButtonImage({
                 class: 'home__title-settings',
                 class_svg: 'svg__settings',
-                alt: 'Вернуться на страницу чатов',
+                alt: 'Открыть настройки',
                 src: settings,
                 events: {
                     click: () => {
@@ -65,9 +71,22 @@ export default class HomeComponent extends Block {
             CreateChatWindow: new CreateChat({
                 clickOnAccept: () => {
                     this.closeWindow('window__create-chat');
+                    this.loadDialogs();
                 },
                 clickOnCancel: () => {
                     this.closeWindow('window__create-chat');
+                }
+            }),
+            DeleteChatWindow: new DeleteChat({
+                clickOnAccept: () => {
+                    this.closeWindow('window__delete-chat');
+                    if (this._deletedChat) {
+                        this.deleteDialogRequest(this._deletedChat.chatID);
+                    }
+                },
+                clickOnCancel: () => {
+                    this.closeWindow('window__delete-chat');
+                    this._deletedChat = undefined;
                 }
             }),
             ChatList: new ChatListComponent(currentChat),
@@ -117,11 +136,26 @@ export default class HomeComponent extends Block {
         this.resetAndEditStyleDialogPanel(element);
     }
 
+    deleteDialog(chatID: number): void {
+        this.openWindowDeleteChat('window__delete-chat');
+        this._deletedChat = { chatID };
+    }
+
     resetAndEditStyleDialogPanel(element: HTMLElement): void {
         const dialogs = this._element.querySelectorAll(`.dialog`);
         dialogs.forEach((e) => e.classList.remove('dialog_selected'));
         element.classList.add('dialog_selected');
         this.setProps({ isSelected: true });
+    }
+
+    deleteDialogRequest(chatID: number): void {
+        void this._serviceHomeApi?.delete({ chatId: chatID.toString() }).then((response) => {
+            if (response.status === 200) {
+                this.loadDialogs();
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
     }
 
     loadDialogs() {
@@ -132,9 +166,15 @@ export default class HomeComponent extends Block {
             if (response.status === 200) {
                 dialogs = JSON.parse(response.response);
                 this.setChildren({
-                    DialogList: new DialogListComponent(dialogs, (element: HTMLElement) => {
-                        this.openDialog(element);
-                    })
+                    DialogList: new DialogListComponent(
+                        dialogs,
+                        (element: HTMLElement) => {
+                            this.openDialog(element);
+                        },
+                        (chatID: number) => {
+                            this.deleteDialog(chatID);
+                        }
+                    )
                 });
             } else if (response.status === 401) {
                 this.router.go('/');
@@ -142,7 +182,13 @@ export default class HomeComponent extends Block {
         });
     }
 
-    openWindow(cssClass: string): void {
+    openWindowCreateChat(cssClass: string): void {
+        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
+        window?.classList.remove('home__windows_disabled');
+        window?.classList.add('home__windows_enabled');
+    }
+
+    openWindowDeleteChat(cssClass: string): void {
         const window = document.querySelector(`.${cssClass}`) as HTMLElement;
         window?.classList.remove('home__windows_disabled');
         window?.classList.add('home__windows_enabled');

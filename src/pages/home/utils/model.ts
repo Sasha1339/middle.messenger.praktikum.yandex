@@ -24,4 +24,5 @@ export interface UserModel {
     email: string;
     login: string;
     phone: string;
+    display_name: string;
 }

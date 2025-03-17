@@ -9,9 +9,15 @@ import EditProfileComponent from './modules/edit-profile/edit-profile.ts';
 import ChangePasswordComponent from './modules/change-password/change-password.ts';
 import { Router } from '../../utils/routing/router.ts';
 import ButtonImage from '../../components/button-image/button-image.ts';
+import { UserModel } from '../home/utils/model.ts';
+import { UserApi } from '../../service/api/user-api.ts';
+import { LoginApi } from '../../service/api/login-api.ts';
 
 export default class ProfileComponent extends Block {
     router: Router;
+    private _user: UserModel;
+    private userApi: UserApi = new UserApi();
+    private loginApi: LoginApi = new LoginApi();
 
     constructor() {
         super({
@@ -23,7 +29,7 @@ export default class ProfileComponent extends Block {
             WindowExit: new WindowExitComponent({
                 clickOnExit: () => {
                     this.closeWindow('window__exit');
-                    this.router.go('/');
+                    this.logoutFromApp();
                 },
                 clickOnCancel: () => {
                     this.closeWindow('window__exit');
@@ -32,6 +38,7 @@ export default class ProfileComponent extends Block {
             ProfileEditWindow: new EditProfileComponent({
                 clickOnAccept: () => {
                     this.closeWindow('window__edit');
+                    this.loadProfileData();
                 },
                 clickOnCancel: () => {
                     this.closeWindow('window__edit');
@@ -94,8 +101,41 @@ export default class ProfileComponent extends Block {
         this.router = new Router('#app');
     }
 
+    isLoaded() {
+        this.loadProfileData();
+    }
+
     render(): string {
         return ProfilePage;
+    }
+
+    logoutFromApp(): void {
+        void this.loginApi.logout().then((response) => {
+            if (response.status === 200) {
+                this.router.go('/');
+            }
+        });
+    }
+
+    loadProfileData(): void {
+        if (!this.userApi) {
+            this.userApi = new UserApi();
+        }
+        void this.userApi.request().then((response) => {
+            if (response.status === 200) {
+                this._user = JSON.parse(response.response);
+                this.setProps({
+                    login: this._user.login,
+                    first_name: this._user.first_name,
+                    second_name: this._user.second_name,
+                    display_name: this._user.display_name,
+                    phone: this._user.phone,
+                    email: this._user.email
+                });
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
     }
 
     findImageElement(event: MouseEvent): void {
