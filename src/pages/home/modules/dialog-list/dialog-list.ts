@@ -6,11 +6,15 @@ export default class DialogListComponent extends Block {
     constructor(
         allDialogs: ChatModel[],
         clickEvent: (element: HTMLElement) => void,
-        deleteEvent: (chatID: number) => void
+        deleteEvent: (chatID: number) => void,
+        usersEvent: (chatID: number) => void
     ) {
         super(
             Object.fromEntries(
-                allDialogs.map((item, index) => [`Dialog${index}`, new DialogComponent(item, clickEvent, deleteEvent)])
+                allDialogs.map((item, index) => [
+                    `Dialog${index}`,
+                    new DialogComponent(item, clickEvent, deleteEvent, usersEvent)
+                ])
             )
         );
     }

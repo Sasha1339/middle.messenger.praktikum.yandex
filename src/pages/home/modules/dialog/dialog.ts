@@ -4,12 +4,14 @@ import { ChatModel } from '../../utils/model.ts';
 import avatar from '../../../../assets/image/avatar.jpg';
 import ButtonImage from '../../../../components/button-image/button-image.ts';
 import deleteChat from '../../../../assets/svg/card.svg';
+import usersChat from '../../../../assets/svg/user.svg';
 
 export default class DialogComponent extends Block {
     constructor(
         dialog: ChatModel,
         clickEvent: (element: HTMLElement) => void,
-        deleteEvent: (chatID: number) => void
+        deleteEvent: (chatID: number) => void,
+        usersEvent: (chatID: number) => void
     ) {
         super({
             ButtonDelete: new ButtonImage({
@@ -23,9 +25,20 @@ export default class DialogComponent extends Block {
                     }
                 }
             }),
+            ButtonUsers: new ButtonImage({
+                class: 'home__title-settings',
+                class_svg: 'svg__settings',
+                alt: 'Пользователи чата',
+                src: usersChat,
+                events: {
+                    click: () => {
+                        usersEvent(dialog.id);
+                    }
+                }
+            }),
             avatar: dialog.avatar ?? avatar,
             title: dialog.title,
-            lastMessage: dialog.last_message,
+            lastMessage: dialog.last_message ?? '',
             lastUpdate: dialog.last_message ? dialog.last_message.time : '',
             unreadCount: dialog.unread_count,
             events: {

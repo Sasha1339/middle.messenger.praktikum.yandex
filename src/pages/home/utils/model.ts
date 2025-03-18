@@ -20,7 +20,6 @@ export interface LastMessageModel {
 export interface UserModel {
     first_name: string;
     second_name: string;
-    avatar: string;
     email: string;
     login: string;
     phone: string;

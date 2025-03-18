@@ -16,6 +16,8 @@ import ButtonImage from '../../components/button-image/button-image.ts';
 import { HomeApi } from '../../service/api/home-api.ts';
 import CreateChat from './modules/create-chat/create-chat.ts';
 import DeleteChat from './modules/delete-chat/delete-chat.ts';
+import UsersChat from './modules/users-chat/users-chat.ts';
+import { ChatApi } from '../../service/api/chat-api.ts';
 
 let dialogs: ChatModel[] = [];
 
@@ -24,6 +26,7 @@ const currentChat: ChatModel[] = [];
 export default class HomeComponent extends Block {
     router: Router;
     private _serviceHomeApi?: HomeApi;
+    private _serviceChatApi?: ChatApi = new ChatApi();
     private _deletedChat?: { chatID: number };
 
     constructor() {
@@ -44,6 +47,9 @@ export default class HomeComponent extends Block {
                 },
                 (chatID: number) => {
                     this.deleteDialog(chatID);
+                },
+                (chatID: number) => {
+                    this.openWindowUserChat('window__users-chat', chatID.toString());
                 }
             ),
             ButtonCreateChat: new ButtonImage({
@@ -77,6 +83,7 @@ export default class HomeComponent extends Block {
                     this.closeWindow('window__create-chat');
                 }
             }),
+            UsersChatWindow: new UsersChat([], () => {}),
             DeleteChatWindow: new DeleteChat({
                 clickOnAccept: () => {
                     this.closeWindow('window__delete-chat');
@@ -173,6 +180,9 @@ export default class HomeComponent extends Block {
                         },
                         (chatID: number) => {
                             this.deleteDialog(chatID);
+                        },
+                        (chatID: number) => {
+                            this.openWindowUserChat('window__users-chat', chatID.toString());
                         }
                     )
                 });
@@ -186,6 +196,22 @@ export default class HomeComponent extends Block {
         const window = document.querySelector(`.${cssClass}`) as HTMLElement;
         window?.classList.remove('home__windows_disabled');
         window?.classList.add('home__windows_enabled');
+    }
+
+    openWindowUserChat(cssClass: string, chatId: string): void {
+        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
+        window?.classList.remove('home__windows_disabled');
+        window?.classList.add('home__windows_enabled');
+        void this._serviceChatApi?.getUsers(chatId).then((response) => {
+            if (response.status === 200) {
+                const users = JSON.parse(response.response);
+                this.setChildren({
+                    UsersChatWindow: new UsersChat(users, () => {})
+                });
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
     }
 
     openWindowDeleteChat(cssClass: string): void {

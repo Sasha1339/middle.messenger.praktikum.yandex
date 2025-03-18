@@ -4,7 +4,7 @@ interface Options {
     timeout?: number;
     headers?: Record<string, string>;
     method?: METHODS;
-    data?: Record<string, string>;
+    data?: Record<string, string> | FormData;
     cookies?: boolean;
 }
 
@@ -54,7 +54,7 @@ export class HttpTransport {
             const xhr = new XMLHttpRequest();
             const isGet = method === METHODS.GET;
 
-            xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+            xhr.open(method, isGet && !!data && !(data instanceof FormData) ? `${url}${queryStringify(data)}` : url);
 
             Object.keys(headers).forEach((key) => {
                 xhr.setRequestHeader(key, headers[key]);
@@ -72,10 +72,14 @@ export class HttpTransport {
             xhr.timeout = timeout;
             xhr.ontimeout = reject;
 
-            if (isGet || !data) {
-                xhr.send();
+            if (data instanceof FormData) {
+                xhr.send(data);
             } else {
-                xhr.send(JSON.stringify(data));
+                if (isGet || !data) {
+                    xhr.send();
+                } else {
+                    xhr.send(JSON.stringify(data));
+                }
             }
         });
     };

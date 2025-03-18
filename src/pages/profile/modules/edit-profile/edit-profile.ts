@@ -105,7 +105,7 @@ export default class EditProfileComponent extends Block {
         if (!this._profileApi) {
             this._profileApi = new ProfileApi();
         }
-        void this._profileApi.update(container.fields).then((response) => {
+        void this._profileApi.updateProfile(container.fields).then((response) => {
             if (response.status === 200) {
                 clickOnAccept();
             }

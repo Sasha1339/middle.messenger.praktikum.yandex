@@ -5,13 +5,16 @@ import Input from '../../../../components/input/input.ts';
 import ClickableText from '../../../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../../../components/form/form.ts';
 import { FormContainer } from '../../../../utils/form/form-container.ts';
+import { ProfileApi } from '../../../../service/api/profile-api.ts';
 
 export default class ChangePasswordComponent extends Block {
+    private _profileApi: ProfileApi = new ProfileApi();
+
     constructor(events: { clickOnAccept: () => void; clickOnCancel: () => void }) {
         super({
             Form: new FormComponent({
                 class: 'window',
-                id: 'changePasswordFormFormData',
+                id: 'changePasswordFormData',
                 OldPasswordInput: new Input({
                     placeholder: 'Старый пароль',
                     class: 'window__input',
@@ -40,7 +43,7 @@ export default class ChangePasswordComponent extends Block {
                 events: {
                     submit: (event: SubmitEvent) => {
                         event.preventDefault();
-                        this.outputData(event);
+                        this.outputData(event, events.clickOnAccept);
                     }
                 }
             })
@@ -51,8 +54,15 @@ export default class ChangePasswordComponent extends Block {
         return PasswordChangeWindow;
     }
 
-    outputData(event: SubmitEvent): void {
+    outputData(event: SubmitEvent, clickOnAccept: () => void): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        if (!this._profileApi) {
+            this._profileApi = new ProfileApi();
+        }
+        void this._profileApi.updatePassword(container.fields).then((response) => {
+            if (response.status === 200) {
+                clickOnAccept();
+            }
+        });
     }
 }
