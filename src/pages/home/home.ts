@@ -83,7 +83,19 @@ export default class HomeComponent extends Block {
                     this.closeWindow('window__create-chat');
                 }
             }),
-            UsersChatWindow: new UsersChat([], () => {}),
+            UsersChatWindow: new UsersChat(
+                [],
+                () => {
+                    this.closeWindow('window__users-chat');
+                },
+                (chatID: number, userId: number) => {
+                    this.addUsers(chatID, userId);
+                },
+                (chatID: number, userId: number) => {
+                    this.deleteUsers(chatID, userId);
+                },
+                0
+            ),
             DeleteChatWindow: new DeleteChat({
                 clickOnAccept: () => {
                     this.closeWindow('window__delete-chat');
@@ -198,16 +210,52 @@ export default class HomeComponent extends Block {
         window?.classList.add('home__windows_enabled');
     }
 
-    openWindowUserChat(cssClass: string, chatId: string): void {
-        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
-        window?.classList.remove('home__windows_disabled');
-        window?.classList.add('home__windows_enabled');
+    getUsers(chatId: string): void {
         void this._serviceChatApi?.getUsers(chatId).then((response) => {
             if (response.status === 200) {
                 const users = JSON.parse(response.response);
                 this.setChildren({
-                    UsersChatWindow: new UsersChat(users, () => {})
+                    UsersChatWindow: new UsersChat(
+                        users,
+                        () => {
+                            this.closeWindow('window__users-chat');
+                        },
+                        (chatID: number, userId: number) => {
+                            this.addUsers(chatID, userId);
+                        },
+                        (chatID: number, userId: number) => {
+                            this.deleteUsers(chatID, userId);
+                        },
+                        Number.parseInt(chatId)
+                    )
                 });
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
+    }
+
+    openWindowUserChat(cssClass: string, chatId: string): void {
+        const window = document.querySelector(`.${cssClass}`) as HTMLElement;
+        window?.classList.remove('home__windows_disabled');
+        window?.classList.add('home__windows_enabled');
+        this.getUsers(chatId);
+    }
+
+    addUsers(chatID: number, userId: number): void {
+        void this._serviceChatApi?.addUsers(chatID, userId).then((response) => {
+            if (response.status === 200) {
+                this.getUsers(chatID.toString());
+            } else if (response.status === 401) {
+                this.router.go('/');
+            }
+        });
+    }
+
+    deleteUsers(chatID: number, userId: number): void {
+        void this._serviceChatApi?.deleteUsers(chatID, userId).then((response) => {
+            if (response.status === 200) {
+                this.getUsers(chatID.toString());
             } else if (response.status === 401) {
                 this.router.go('/');
             }

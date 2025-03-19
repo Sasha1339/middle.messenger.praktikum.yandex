@@ -3,8 +3,17 @@ import { UserModel } from '../../utils/model.ts';
 import UserComponent from '../user/user.ts';
 
 export default class UserListComponent extends Block {
-    constructor(users: UserModel[]) {
-        super(Object.fromEntries(users.map((item, index) => [`User${index}`, new UserComponent(item)])));
+    constructor(users: UserModel[], deleteUsers: (userId: number) => void) {
+        super(
+            Object.fromEntries(
+                users.map((item, index) => [
+                    `User${index}`,
+                    new UserComponent(item, (userId: number) => {
+                        deleteUsers(userId);
+                    })
+                ])
+            )
+        );
     }
 
     render(): string {

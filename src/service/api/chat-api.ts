@@ -18,4 +18,18 @@ export class ChatApi extends BaseApi {
     getUsers(chatId: string) {
         return this._registerApi.get(`chats/${chatId}/users`, { headers: { credentials: 'include' } });
     }
+
+    addUsers(chatId: number, userId: number) {
+        return this._registerApi.put(`chats/users`, {
+            data: { users: [userId], chatId: chatId },
+            headers: { credentials: 'include', 'Content-Type': 'application/json' }
+        });
+    }
+
+    deleteUsers(chatId: number, userId: number) {
+        return this._registerApi.delete(`chats/users`, {
+            data: { users: [userId], chatId: chatId },
+            headers: { credentials: 'include', 'Content-Type': 'application/json' }
+        });
+    }
 }

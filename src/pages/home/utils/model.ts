@@ -18,6 +18,7 @@ export interface LastMessageModel {
 }
 
 export interface UserModel {
+    id: number;
     first_name: string;
     second_name: string;
     email: string;

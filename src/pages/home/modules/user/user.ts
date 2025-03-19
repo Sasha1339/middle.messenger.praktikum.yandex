@@ -5,16 +5,16 @@ import ButtonImage from '../../../../components/button-image/button-image.ts';
 import card from '../../../../assets/svg/card.svg';
 
 export default class UserComponent extends Block {
-    constructor(message: UserModel) {
+    constructor(message: UserModel, deleteUsers: (userId: number) => void) {
         super({
             DeleteImage: new ButtonImage({
                 class: 'home__title-settings',
                 class_svg: 'svg__settings',
-                alt: 'Закрыть окошко',
+                alt: 'Удалить пользователя из чата',
                 src: card,
                 events: {
                     click: () => {
-                        //
+                        deleteUsers(message.id);
                     }
                 }
             }),

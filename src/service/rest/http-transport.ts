@@ -4,11 +4,11 @@ interface Options {
     timeout?: number;
     headers?: Record<string, string>;
     method?: METHODS;
-    data?: Record<string, string> | FormData;
+    data?: Record<string, unknown> | FormData;
     cookies?: boolean;
 }
 
-function queryStringify(data: Record<string, string>) {
+function queryStringify(data: Record<string, unknown>) {
     if (typeof data !== 'object') {
         throw new Error('Data must be object');
     }
