@@ -224,6 +224,9 @@ export default class HomeComponent extends Block {
                 type: 'get old'
             });
         });
+        this._ws.on(WSTransport.WSTransportEvent.ERROR, () => {
+            console.log('Возникла ошибка соединения, перезагрузите страницу')
+        });
     }
 
     deleteDialog(chatID: number): void {
