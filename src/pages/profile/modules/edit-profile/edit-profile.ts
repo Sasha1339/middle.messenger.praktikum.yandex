@@ -5,12 +5,16 @@ import Input from '../../../../components/input/input.ts';
 import ClickableText from '../../../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../../../components/form/form.ts';
 import { FormContainer } from '../../../../utils/form/form-container.ts';
+import { ProfileApi } from '../../../../service/api/profile-api.ts';
 
 export default class EditProfileComponent extends Block {
+    private _profileApi: ProfileApi = new ProfileApi();
+
     constructor(events: { clickOnAccept: () => void; clickOnCancel: () => void }) {
         super({
             Form: new FormComponent({
                 class: 'window',
+                id: 'editFormData',
                 FirstNameInput: new Input({
                     placeholder: 'Имя',
                     class: 'window__input',
@@ -69,7 +73,7 @@ export default class EditProfileComponent extends Block {
                     pattern: '^\\+?\\d+$',
                     title: 'Используйте любые цифры, может быть + в начале, от 10 до 15 символов',
                     min: 10,
-                    max: 15
+                    max: 11
                 }),
                 ButtonAccept: new Button({
                     label: 'Редактировать',
@@ -85,7 +89,7 @@ export default class EditProfileComponent extends Block {
                 events: {
                     submit: (event: SubmitEvent) => {
                         event.preventDefault();
-                        this.outputData(event);
+                        this.outputData(event, events.clickOnAccept);
                     }
                 }
             })
@@ -96,8 +100,15 @@ export default class EditProfileComponent extends Block {
         return ProfileEditWindow;
     }
 
-    outputData(event: SubmitEvent): void {
+    outputData(event: SubmitEvent, clickOnAccept: () => void): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        if (!this._profileApi) {
+            this._profileApi = new ProfileApi();
+        }
+        void this._profileApi.updateProfile(container.fields).then((response) => {
+            if (response.status === 200) {
+                clickOnAccept();
+            }
+        });
     }
 }

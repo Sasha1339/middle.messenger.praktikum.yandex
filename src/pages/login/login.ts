@@ -5,8 +5,13 @@ import Input from '../../components/input/input.ts';
 import ClickableText from '../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../components/form/form.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
+import { Router } from '../../utils/routing/router.ts';
+import { LoginApi } from '../../service/api/login-api.ts';
 
 export default class LoginComponent extends Block {
+    router: Router;
+    private _serviceApi: LoginApi = new LoginApi();
+
     constructor() {
         super({
             Form: new FormComponent({
@@ -35,7 +40,12 @@ export default class LoginComponent extends Block {
                 }),
                 TextRegister: new ClickableText({
                     class: 'login__register',
-                    text: 'Нет аккаунта?'
+                    text: 'Нет аккаунта?',
+                    events: {
+                        click: () => {
+                            this.router.go('/sign-up');
+                        }
+                    }
                 }),
                 events: {
                     submit: (event: SubmitEvent) => {
@@ -45,6 +55,7 @@ export default class LoginComponent extends Block {
                 }
             })
         });
+        this.router = new Router('#app');
     }
 
     render(): string {
@@ -53,6 +64,18 @@ export default class LoginComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        void this._serviceApi.create(container.fields).then((response) => {
+            if (response.status === 200) {
+                this.router.go('/messenger');
+            } else if (response.status === 400) {
+                this.router.go('/messenger');
+            } else if (response.status === 401) {
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
+            }
+        });
     }
 }

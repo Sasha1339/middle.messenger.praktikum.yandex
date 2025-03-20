@@ -1,6 +1,6 @@
 .home {
   display: grid;
-  grid-template-columns: 22vw auto;
+  grid-template-columns: 350px auto;
   width: 100vw;
   height: 100vh;
 }
@@ -10,7 +10,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(22vw - 1px);
+  width: calc(350px - 1px);
   height: 150px;
   border-bottom: 1px solid var(--primary-border);
   z-index: 100;
@@ -25,6 +25,7 @@
   padding: 155px 5px 5px;
   overflow-y: auto;
   border-right: 1px solid var(--primary-border);
+  box-sizing: border-box;
 }
 
 .home__dialog-list {
@@ -89,9 +90,8 @@
 
 .home__title-top {
   box-sizing: border-box;
-  padding-left: 10%;
   display: grid;
-  grid-template-columns: 88% auto;
+  grid-template-columns: auto 76% auto;
   width: 100%;
   height: 100%;
   align-content: center;
@@ -216,8 +216,43 @@
   display: none;
 }
 
+.home__user-list {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 300px;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  justify-content: flex-start;
+}
+
+.home__user-list::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+.home__user-list::-moz-scrollbar {
+  width: 0; /*  Скрываем  ползунок  в  Firefox  */
+}
+
 .home__chat-list {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.home__windows_disabled {
+  display: none;
+}
+
+.home__windows_enabled {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  z-index: 200;
+  height: 100vh;
+  background-color: var(--background-modal-window);
 }

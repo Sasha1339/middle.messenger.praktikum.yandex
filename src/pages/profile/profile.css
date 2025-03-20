@@ -71,6 +71,7 @@
   justify-content: space-between;
   border-bottom: 1px solid var(--primary-border);
   height: 40px;
+  box-sizing: border-box;
 }
 
 .profile__buttons {

@@ -7,7 +7,8 @@ export default class Block {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
         FLOW_CDU: 'flow:component-did-update',
-        FLOW_RENDER: 'flow:render'
+        FLOW_RENDER: 'flow:render',
+        COMPONENT_LOADED: 'flow:component-loaded'
     };
 
     _element!: HTMLElement;
@@ -15,6 +16,8 @@ export default class Block {
     _eventBus: EventBus;
     _id: string = '';
     _children: Record<string, Block> = {};
+    _isLoaded: boolean = false;
+    _classesChildren: Map<number, string> = new Map();
 
     constructor(propsAndChildren: Record<string, unknown> = {}) {
         const { children, props } = this._getChildren(propsAndChildren);
@@ -51,26 +54,6 @@ export default class Block {
         return { children, props };
     }
 
-    compile(template: string, props: Record<string, unknown>) {
-        const propsAndStubs = { ...props };
-
-        Object.entries(this._children).forEach(([key, child]) => {
-            propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
-        });
-
-        const fragment = this._createDocumentElement('template');
-
-        fragment.innerHTML = Handlebars.compile(template, propsAndStubs)({});
-
-        Object.values(this._children).forEach((child) => {
-            const stub = fragment.querySelector(`[data-id="${child.id}"]`) as HTMLElement;
-
-            stub.replaceWith(child.getContent());
-        });
-
-        return fragment;
-    }
-
     eventBus(): EventBus {
         return this._eventBus;
     }
@@ -80,7 +63,10 @@ export default class Block {
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on(Block.EVENTS.COMPONENT_LOADED, this.isLoaded.bind(this));
     }
+
+    isLoaded(): void {}
 
     init() {
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
@@ -95,6 +81,18 @@ export default class Block {
     }
 
     _render() {
+        this._classesChildren = new Map();
+        if (this._element) {
+            for (let i = 0; i < this._element.childNodes.length; i++) {
+                if (
+                    (this._element.childNodes[i] as HTMLElement).classList &&
+                    (this._element.childNodes[i] as HTMLElement).classList.length !== 0
+                ) {
+                    this._classesChildren.set(i, (this._element.childNodes[i] as HTMLElement).className);
+                }
+            }
+        }
+
         const propsAndStubs: Record<string, unknown> = { ...this._props };
 
         Object.entries(this._children).forEach(([key, child]) => {
@@ -113,17 +111,24 @@ export default class Block {
 
         const newElement = fragment.content.firstElementChild as HTMLElement;
 
-        if (this._element) {
-            while (this._element.firstChild) {
-                this._element.removeChild(this._element.firstChild);
+        if (this._element && this._element.parentElement) {
+            this._element.replaceWith(newElement);
+        }
+        this._element = newElement;
+
+        if (this._element && this._classesChildren.size > 0) {
+            for (let i = 0; i < this._element.childNodes.length; i++) {
+                (this._element.childNodes[i] as HTMLElement).className = this._classesChildren.get(i)!;
             }
-            this._element.appendChild(newElement);
-        } else {
-            this._element = newElement;
         }
 
         this._removeEvents();
         this._addEvents();
+
+        if (!this._isLoaded) {
+            this._isLoaded = true;
+            this._eventBus.emit(Block.EVENTS.COMPONENT_LOADED);
+        }
     }
 
     render(): string {
@@ -134,7 +139,7 @@ export default class Block {
         return this.element;
     }
 
-    componentDidMount(oldProps?: string) {}
+    componentDidMount() {}
 
     dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -149,6 +154,7 @@ export default class Block {
         if (!response) {
             return;
         }
+
         this._render();
     }
 
@@ -239,7 +245,7 @@ export default class Block {
     }
 
     show() {
-        this.getContent().style.display = 'block';
+        this.getContent().style.display = '';
     }
 
     hide() {

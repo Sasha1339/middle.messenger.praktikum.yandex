@@ -5,8 +5,13 @@ import Input from '../../components/input/input.ts';
 import ClickableText from '../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../components/form/form.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
+import { Router } from '../../utils/routing/router.ts';
+import { RegisterApi } from '../../service/api/register-api.ts';
 
 export default class RegisterComponent extends Block {
+    router: Router;
+    private _serviceApi: RegisterApi = new RegisterApi();
+
     constructor() {
         super({
             Form: new FormComponent({
@@ -86,16 +91,24 @@ export default class RegisterComponent extends Block {
                 }),
                 TextLogin: new ClickableText({
                     class: 'register__auth',
-                    text: 'Войти'
+                    text: 'Войти',
+                    events: {
+                        click: () => {
+                            this.router.go('/');
+                        }
+                    }
                 }),
                 events: {
                     submit: (event: SubmitEvent) => {
                         event.preventDefault();
+                        this.onValidate();
                         this.outputData(event);
                     }
                 }
             })
         });
+
+        this.router = new Router('#app');
     }
 
     render(): string {
@@ -104,12 +117,16 @@ export default class RegisterComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        void this._serviceApi.create(container.fields).then((response) => {
+            if (response.status === 200) {
+                this.router.go('/messenger');
+            }
+        });
     }
 
     onValidate(): void {
-        const password = document.querySelector('[name="password"]') as HTMLInputElement;
-        const confirmPassword = document.querySelector('[name="password_two"]') as HTMLInputElement;
+        const password = document.querySelector('[name="password"].register__input') as HTMLInputElement;
+        const confirmPassword = document.querySelector('[name="password_two"].register__input') as HTMLInputElement;
 
         if (confirmPassword.value !== password.value) {
             confirmPassword.setCustomValidity('Пароли не совпадают!');
