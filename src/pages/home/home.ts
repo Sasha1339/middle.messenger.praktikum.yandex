@@ -201,7 +201,7 @@ export default class HomeComponent extends Block {
         this._isConnectedWS = false;
         void this._ws.connect();
         this._ws.on('message', (data: ChatListModel[]) => {
-            if (data.length > 0) {
+            if (data.length > 0 || data.length === 0) {
                 this.setChildren({
                     ChatList: new ChatListComponent(data.reverse(), users, this._userId!)
                 });
