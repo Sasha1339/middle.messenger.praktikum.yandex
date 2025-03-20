@@ -225,7 +225,7 @@ export default class HomeComponent extends Block {
             });
         });
         this._ws.on(WSTransport.WSTransportEvent.ERROR, () => {
-            console.log('Возникла ошибка соединения, перезагрузите страницу')
+            console.log('Возникла ошибка соединения, перезагрузите страницу');
         });
     }
 
