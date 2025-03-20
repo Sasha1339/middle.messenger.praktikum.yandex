@@ -15,7 +15,7 @@ function queryStringify(data: Record<string, unknown>) {
 
     const keys: string[] = Object.keys(data);
     return keys.reduce((result, key, index): string => {
-        return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
+        return `${result}${key}=${data[key] as string}${index < keys.length - 1 ? '&' : ''}`;
     }, '?');
 }
 

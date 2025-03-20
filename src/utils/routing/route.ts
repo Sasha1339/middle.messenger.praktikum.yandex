@@ -51,10 +51,7 @@ export class Route<Type extends Block> {
 function render(query: string, block: Block): void {
     const container = document.querySelector(query) as HTMLElement;
 
-    //container.childNodes.forEach((e) => e.remove());
-
     container.appendChild(block.getContent());
 
     block.dispatchComponentDidMount();
-
 }
