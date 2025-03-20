@@ -10,7 +10,7 @@ import FormMessageComponent from './modules/form-message/form-message.ts';
 import InputMessageComponent from './modules/input-message/input-message.ts';
 import { FormContainer } from '../../utils/form/form-container.ts';
 import ChatListComponent from './modules/chat-list/chat-list.ts';
-import { ChatModel } from './utils/model.ts';
+import { ChatListModel, ChatModel, UserModel } from './utils/model.ts';
 import { Router } from '../../utils/routing/router.ts';
 import ButtonImage from '../../components/button-image/button-image.ts';
 import { HomeApi } from '../../service/api/home-api.ts';
@@ -18,16 +18,22 @@ import CreateChat from './modules/create-chat/create-chat.ts';
 import DeleteChat from './modules/delete-chat/delete-chat.ts';
 import UsersChat from './modules/users-chat/users-chat.ts';
 import { ChatApi } from '../../service/api/chat-api.ts';
+import { WSTransport } from '../../service/ws/WSTransport.ts';
+import { UserApi } from '../../service/api/user-api.ts';
 
 let dialogs: ChatModel[] = [];
 
-const currentChat: ChatModel[] = [];
+const currentChat: ChatListModel[] = [];
 
 export default class HomeComponent extends Block {
     router: Router;
     private _serviceHomeApi?: HomeApi;
     private _serviceChatApi?: ChatApi = new ChatApi();
     private _deletedChat?: { chatID: number };
+    private _userApi?: UserApi = new UserApi();
+    private _userId?: number;
+    private _isConnectedWS: boolean = false;
+    private _ws?: WSTransport;
 
     constructor() {
         super({
@@ -42,8 +48,8 @@ export default class HomeComponent extends Block {
             }),
             DialogList: new DialogListComponent(
                 dialogs,
-                (element: HTMLElement) => {
-                    this.openDialog(element);
+                (element: HTMLElement, chatId: number) => {
+                    this.getUsers(chatId.toString(), true, element);
                 },
                 (chatID: number) => {
                     this.deleteDialog(chatID);
@@ -77,6 +83,7 @@ export default class HomeComponent extends Block {
             CreateChatWindow: new CreateChat({
                 clickOnAccept: () => {
                     this.closeWindow('window__create-chat');
+                    this.setProps({ isSelected: false });
                     this.loadDialogs();
                 },
                 clickOnCancel: () => {
@@ -108,12 +115,14 @@ export default class HomeComponent extends Block {
                     this._deletedChat = undefined;
                 }
             }),
-            ChatList: new ChatListComponent(currentChat),
+            ChatList: new ChatListComponent(currentChat, new Map(), 0),
             add: add,
             arrow: arrow,
             search: search
         });
         this.router = new Router('#app');
+
+        this.getUserId();
 
         if (!this._serviceHomeApi) {
             this._serviceHomeApi = new HomeApi();
@@ -129,18 +138,34 @@ export default class HomeComponent extends Block {
         this.loadDialogs();
     }
 
+    getUserId(): void {
+        void this._userApi?.request().then((response) => {
+            if (response.status === 200) {
+                const user = JSON.parse(response.response);
+                this._userId = user.id;
+            } else if (response.status === 401) {
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
+            }
+        });
+    }
+
     render(): string {
-        setTimeout(() => {
-            this.scrollChatToDown();
-        }, 1000);
         return HomePage;
     }
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
         const input = ((event.target as HTMLFormElement).querySelector('[name="message"]') as HTMLInputElement).value;
-        if (input !== '' && input.replaceAll(' ', '').length > 0) {
-            console.log(container);
+        if (input !== '' && input.replaceAll(' ', '').length > 0 && this._isConnectedWS) {
+            this._ws?.send({
+                type: 'message',
+                content: container.fields['message']
+            });
+            ((event.target as HTMLFormElement).querySelector('[name="message"]') as HTMLInputElement).value = '';
         }
     }
 
@@ -151,8 +176,54 @@ export default class HomeComponent extends Block {
         }
     }
 
-    openDialog(element: HTMLElement): void {
-        this.resetAndEditStyleDialogPanel(element);
+    openDialog(element: HTMLElement, chatId: number, users: Map<number, string>): void {
+        this.getTokenByChat(element, chatId, users);
+    }
+
+    getTokenByChat(element: HTMLElement, chatID: number, users: Map<number, string>): void {
+        void this._serviceChatApi?.getToken(chatID).then((response) => {
+            if (response.status === 200) {
+                const tokenMessage = JSON.parse(response.response);
+                this.openWS(element, tokenMessage.token, chatID, users);
+            } else if (response.status === 401) {
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
+            }
+        });
+    }
+
+    openWS(element: HTMLElement, token: string, chatId: number, users: Map<number, string>): void {
+        this._ws = new WSTransport(`wss://ya-praktikum.tech/ws/chats/${this._userId}/${chatId}/${token}`);
+        this._ws.close();
+        this._isConnectedWS = false;
+        void this._ws.connect();
+        this._ws.on('message', (data: ChatListModel[]) => {
+            if (data.length > 0) {
+                this.setChildren({
+                    ChatList: new ChatListComponent(data.reverse(), users, this._userId!)
+                });
+                (this._children['DialogList'] as DialogListComponent).updateCountMessage(chatId);
+                setTimeout(() => {
+                    this.scrollChatToDown();
+                });
+            } else {
+                this._ws?.send({
+                    content: '0',
+                    type: 'get old'
+                });
+            }
+        });
+        this._ws.on(WSTransport.WSTransportEvent.CONNECTED, () => {
+            this._isConnectedWS = true;
+            this.resetAndEditStyleDialogPanel(element);
+            this._ws?.send({
+                content: '0',
+                type: 'get old'
+            });
+        });
     }
 
     deleteDialog(chatID: number): void {
@@ -170,9 +241,14 @@ export default class HomeComponent extends Block {
     deleteDialogRequest(chatID: number): void {
         void this._serviceHomeApi?.delete({ chatId: chatID.toString() }).then((response) => {
             if (response.status === 200) {
+                this.setProps({ isSelected: false });
                 this.loadDialogs();
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }
@@ -187,8 +263,8 @@ export default class HomeComponent extends Block {
                 this.setChildren({
                     DialogList: new DialogListComponent(
                         dialogs,
-                        (element: HTMLElement) => {
-                            this.openDialog(element);
+                        (element: HTMLElement, chatId: number) => {
+                            this.getUsers(chatId.toString(), true, element);
                         },
                         (chatID: number) => {
                             this.deleteDialog(chatID);
@@ -199,7 +275,11 @@ export default class HomeComponent extends Block {
                     )
                 });
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }
@@ -210,27 +290,39 @@ export default class HomeComponent extends Block {
         window?.classList.add('home__windows_enabled');
     }
 
-    getUsers(chatId: string): void {
+    getUsers(chatId: string, isLoadChat?: boolean, element?: HTMLElement): void {
         void this._serviceChatApi?.getUsers(chatId).then((response) => {
             if (response.status === 200) {
-                const users = JSON.parse(response.response);
-                this.setChildren({
-                    UsersChatWindow: new UsersChat(
-                        users,
-                        () => {
-                            this.closeWindow('window__users-chat');
-                        },
-                        (chatID: number, userId: number) => {
-                            this.addUsers(chatID, userId);
-                        },
-                        (chatID: number, userId: number) => {
-                            this.deleteUsers(chatID, userId);
-                        },
-                        Number.parseInt(chatId)
-                    )
-                });
+                const users = JSON.parse(response.response) as UserModel[];
+                if (isLoadChat) {
+                    const mappedUsers = new Map<number, string>();
+                    users.forEach((user) => {
+                        mappedUsers.set(user.id, user.first_name);
+                    });
+                    this.openDialog(element!, Number.parseInt(chatId), mappedUsers);
+                } else {
+                    this.setChildren({
+                        UsersChatWindow: new UsersChat(
+                            users,
+                            () => {
+                                this.closeWindow('window__users-chat');
+                            },
+                            (chatID: number, userId: number) => {
+                                this.addUsers(chatID, userId);
+                            },
+                            (chatID: number, userId: number) => {
+                                this.deleteUsers(chatID, userId);
+                            },
+                            Number.parseInt(chatId)
+                        )
+                    });
+                }
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }
@@ -247,7 +339,11 @@ export default class HomeComponent extends Block {
             if (response.status === 200) {
                 this.getUsers(chatID.toString());
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }
@@ -257,7 +353,11 @@ export default class HomeComponent extends Block {
             if (response.status === 200) {
                 this.getUsers(chatID.toString());
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }
@@ -276,6 +376,7 @@ export default class HomeComponent extends Block {
 
     show() {
         super.show();
+        this.setProps({ isSelected: false });
         this.loadDialogs();
     }
 }

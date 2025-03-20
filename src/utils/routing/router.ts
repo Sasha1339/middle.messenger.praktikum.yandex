@@ -21,8 +21,8 @@ export class Router {
         Router.__instance = this;
     }
 
-    use(pathname: string, block: new () => Block): Router {
-        const route = new Route(pathname, block, { rootQuery: this._rootQuery });
+    use(pathname: string, block: new (...args: any[]) => Block, params?: Record<string, unknown>): Router {
+        const route = new Route(pathname, block, { rootQuery: this._rootQuery }, params);
 
         this.routes.push(route);
 

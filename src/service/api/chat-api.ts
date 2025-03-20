@@ -15,6 +15,14 @@ export class ChatApi extends BaseApi {
         return this._registerApi.get('chats', { headers: { credentials: 'include' } });
     }
 
+    getToken(chatId: number) {
+        return this._registerApi.post(`chats/token/${chatId}`, { headers: { credentials: 'include' } });
+    }
+
+    updateCountMessage(chatId: number) {
+        return this._registerApi.get(`chats/new/${chatId}`, { headers: { credentials: 'include' } });
+    }
+
     getUsers(chatId: string) {
         return this._registerApi.get(`chats/${chatId}/users`, { headers: { credentials: 'include' } });
     }

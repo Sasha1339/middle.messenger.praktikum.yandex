@@ -61,7 +61,10 @@ export default class ChangePasswordComponent extends Block {
         }
         void this._profileApi.updatePassword(container.fields).then((response) => {
             if (response.status === 200) {
+                this.setProps({ password: undefined });
                 clickOnAccept();
+            } else if (response.status === 400) {
+                this.setProps({ password: 'true' });
             }
         });
     }

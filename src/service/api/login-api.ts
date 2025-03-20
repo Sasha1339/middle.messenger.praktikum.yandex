@@ -15,6 +15,6 @@ export class LoginApi extends BaseApi {
     }
 
     logout() {
-        return this._registerApi.post('auth/logout', {cookies: false});
+        return this._registerApi.post('auth/logout', {});
     }
 }

@@ -1,6 +1,6 @@
 .home {
   display: grid;
-  grid-template-columns: 22vw auto;
+  grid-template-columns: 350px auto;
   width: 100vw;
   height: 100vh;
 }
@@ -10,8 +10,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: calc(22vw - 1px);
-  min-width: 350px;
+  width: calc(350px - 1px);
   height: 150px;
   border-bottom: 1px solid var(--primary-border);
   z-index: 100;
@@ -26,7 +25,6 @@
   padding: 155px 5px 5px;
   overflow-y: auto;
   border-right: 1px solid var(--primary-border);
-  min-width: 350px;
   box-sizing: border-box;
 }
 

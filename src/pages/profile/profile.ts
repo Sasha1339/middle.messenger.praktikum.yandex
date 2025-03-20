@@ -133,7 +133,11 @@ export default class ProfileComponent extends Block {
                     email: this._user.email
                 });
             } else if (response.status === 401) {
-                this.router.go('/');
+                this.router.go('/401');
+            } else if (response.status === 500) {
+                this.router.go('/500');
+            } else if (response.status === 404) {
+                this.router.go('/404');
             }
         });
     }

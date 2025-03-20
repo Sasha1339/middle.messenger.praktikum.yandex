@@ -1,12 +1,13 @@
 import Block from '../../../../utils/block/block.ts';
-import { Model } from '../../utils/model.ts';
+import { ChatListModel } from '../../utils/model.ts';
 import { Message } from './index.ts';
 
 export default class MessageComponent extends Block {
-    constructor(message: Model) {
+    constructor(message: ChatListModel, name: string, me: number) {
         super({
-            message: message.message,
-            side: message.side
+            user_name: name,
+            message: message.content,
+            side: message.user_id === me ? 'me' : 'companion'
         });
     }
 

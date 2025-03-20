@@ -1,7 +1,6 @@
 export interface ChatModel {
     message: string;
     file: string;
-    side: 'me' | 'companion';
     time: string;
     date: string;
     id: number;
@@ -9,6 +8,12 @@ export interface ChatModel {
     avatar?: string;
     unread_count?: number;
     last_message: LastMessageModel;
+}
+
+export interface ChatListModel {
+    content: string;
+    side: 'me' | 'companion';
+    user_id: number;
 }
 
 export interface LastMessageModel {

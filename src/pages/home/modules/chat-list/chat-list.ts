@@ -1,10 +1,17 @@
 import Block from '../../../../utils/block/block.ts';
-import { Model } from '../../utils/model.ts';
+import { ChatListModel } from '../../utils/model.ts';
 import MessageComponent from '../message/message.ts';
 
 export default class ChatListComponent extends Block {
-    constructor(chat: Model[]) {
-        super(Object.fromEntries(chat.map((item, index) => [`Message${index}`, new MessageComponent(item)])));
+    constructor(chat: ChatListModel[], users: Map<number, string>, me: number) {
+        super(
+            Object.fromEntries(
+                chat.map((item, index) => [
+                    `Message${index}`,
+                    new MessageComponent(item, users.get(item.user_id) ?? '', me)
+                ])
+            )
+        );
     }
 
     render(): string {

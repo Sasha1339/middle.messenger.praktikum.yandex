@@ -5,7 +5,7 @@ import { ChatModel } from '../../utils/model.ts';
 export default class DialogListComponent extends Block {
     constructor(
         allDialogs: ChatModel[],
-        clickEvent: (element: HTMLElement) => void,
+        clickEvent: (element: HTMLElement, chatId: number) => void,
         deleteEvent: (chatID: number) => void,
         usersEvent: (chatID: number) => void
     ) {
@@ -17,6 +17,15 @@ export default class DialogListComponent extends Block {
                 ])
             )
         );
+    }
+
+    updateCountMessage(chatId: number): void {
+        const dialogComponent = Object.values(this._children).find(
+            (e) => (e as DialogComponent).getChatId() === chatId
+        );
+        if (dialogComponent) {
+            (dialogComponent as DialogComponent).updateCount();
+        }
     }
 
     render(): string {
