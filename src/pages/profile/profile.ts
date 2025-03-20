@@ -15,7 +15,7 @@ import { LoginApi } from '../../service/api/login-api.ts';
 
 export default class ProfileComponent extends Block {
     router: Router;
-    private _user: UserModel;
+    private _user?: UserModel;
     private userApi: UserApi = new UserApi();
     private loginApi: LoginApi = new LoginApi();
 
@@ -125,12 +125,12 @@ export default class ProfileComponent extends Block {
             if (response.status === 200) {
                 this._user = JSON.parse(response.response);
                 this.setProps({
-                    login: this._user.login,
-                    first_name: this._user.first_name,
-                    second_name: this._user.second_name,
-                    display_name: this._user.display_name,
-                    phone: this._user.phone,
-                    email: this._user.email
+                    login: this._user!.login,
+                    first_name: this._user!.first_name,
+                    second_name: this._user!.second_name,
+                    display_name: this._user!.display_name,
+                    phone: this._user!.phone,
+                    email: this._user!.email
                 });
             } else if (response.status === 401) {
                 this.router.go('/401');
