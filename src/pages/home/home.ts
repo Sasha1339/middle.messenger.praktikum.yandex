@@ -139,18 +139,23 @@ export default class HomeComponent extends Block {
     }
 
     getUserId(): void {
-        void this._userApi?.request().then((response) => {
-            if (response.status === 200) {
-                const user = JSON.parse(response.response);
-                this._userId = user.id;
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._userApi
+            ?.request()
+            .then((response) => {
+                if (response.status === 200) {
+                    const user = JSON.parse(response.response);
+                    this._userId = user.id;
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render(): string {
@@ -181,18 +186,23 @@ export default class HomeComponent extends Block {
     }
 
     getTokenByChat(element: HTMLElement, chatID: number, users: Map<number, string>): void {
-        void this._serviceChatApi?.getToken(chatID).then((response) => {
-            if (response.status === 200) {
-                const tokenMessage = JSON.parse(response.response);
-                this.openWS(element, tokenMessage.token, chatID, users);
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceChatApi
+            ?.getToken(chatID)
+            .then((response) => {
+                if (response.status === 200) {
+                    const tokenMessage = JSON.parse(response.response);
+                    this.openWS(element, tokenMessage.token, chatID, users);
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     openWS(element: HTMLElement, token: string, chatId: number, users: Map<number, string>): void {
@@ -242,49 +252,59 @@ export default class HomeComponent extends Block {
     }
 
     deleteDialogRequest(chatID: number): void {
-        void this._serviceHomeApi?.delete({ chatId: chatID.toString() }).then((response) => {
-            if (response.status === 200) {
-                this.setProps({ isSelected: false });
-                this.loadDialogs();
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceHomeApi
+            ?.delete({ chatId: chatID.toString() })
+            .then((response) => {
+                if (response.status === 200) {
+                    this.setProps({ isSelected: false });
+                    this.loadDialogs();
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     loadDialogs() {
         if (!this._serviceHomeApi) {
             this._serviceHomeApi = new HomeApi();
         }
-        void this._serviceHomeApi.request().then((response) => {
-            if (response.status === 200) {
-                dialogs = JSON.parse(response.response);
-                this.setChildren({
-                    DialogList: new DialogListComponent(
-                        dialogs,
-                        (element: HTMLElement, chatId: number) => {
-                            this.getUsers(chatId.toString(), true, element);
-                        },
-                        (chatID: number) => {
-                            this.deleteDialog(chatID);
-                        },
-                        (chatID: number) => {
-                            this.openWindowUserChat('window__users-chat', chatID.toString());
-                        }
-                    )
-                });
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceHomeApi
+            .request()
+            .then((response) => {
+                if (response.status === 200) {
+                    dialogs = JSON.parse(response.response);
+                    this.setChildren({
+                        DialogList: new DialogListComponent(
+                            dialogs,
+                            (element: HTMLElement, chatId: number) => {
+                                this.getUsers(chatId.toString(), true, element);
+                            },
+                            (chatID: number) => {
+                                this.deleteDialog(chatID);
+                            },
+                            (chatID: number) => {
+                                this.openWindowUserChat('window__users-chat', chatID.toString());
+                            }
+                        )
+                    });
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     openWindowCreateChat(cssClass: string): void {
@@ -338,31 +358,41 @@ export default class HomeComponent extends Block {
     }
 
     addUsers(chatID: number, userId: number): void {
-        void this._serviceChatApi?.addUsers(chatID, userId).then((response) => {
-            if (response.status === 200) {
-                this.getUsers(chatID.toString());
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceChatApi
+            ?.addUsers(chatID, userId)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.getUsers(chatID.toString());
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     deleteUsers(chatID: number, userId: number): void {
-        void this._serviceChatApi?.deleteUsers(chatID, userId).then((response) => {
-            if (response.status === 200) {
-                this.getUsers(chatID.toString());
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceChatApi
+            ?.deleteUsers(chatID, userId)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.getUsers(chatID.toString());
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     openWindowDeleteChat(cssClass: string): void {

@@ -64,18 +64,23 @@ export default class LoginComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        void this._serviceApi.create(container.fields).then((response) => {
-            if (response.status === 200) {
-                this.router.go('/messenger');
-            } else if (response.status === 400) {
-                this.router.go('/messenger');
-            } else if (response.status === 401) {
-                this.router.go('/401');
-            } else if (response.status === 500) {
-                this.router.go('/500');
-            } else if (response.status === 404) {
-                this.router.go('/404');
-            }
-        });
+        void this._serviceApi
+            .create(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.router.go('/messenger');
+                } else if (response.status === 400) {
+                    this.router.go('/messenger');
+                } else if (response.status === 401) {
+                    this.router.go('/401');
+                } else if (response.status === 500) {
+                    this.router.go('/500');
+                } else if (response.status === 404) {
+                    this.router.go('/404');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }

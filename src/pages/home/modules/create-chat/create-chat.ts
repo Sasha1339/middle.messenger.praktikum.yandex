@@ -47,11 +47,16 @@ export default class CreateChat extends Block {
 
     outputData(event: SubmitEvent, handler: () => void): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        void this._serviceChatApi.create(container.fields).then((response) => {
-            if (response.status === 200) {
-                handler();
-            }
-        });
+        void this._serviceChatApi
+            .create(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    handler();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render(): string {

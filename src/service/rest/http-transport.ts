@@ -1,4 +1,5 @@
 import { METHODS } from './method.ts';
+import {BASE_URL} from "../api/base-api.ts";
 
 interface Options {
     timeout?: number;
@@ -15,15 +16,15 @@ function queryStringify(data: Record<string, unknown>) {
 
     const keys: string[] = Object.keys(data);
     return keys.reduce((result, key, index): string => {
-        return `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`;
+        return `${result}${key}=${data[key] as string}${index < keys.length - 1 ? '&' : ''}`;
     }, '?');
 }
 
 export class HttpTransport {
     private _api: string;
 
-    constructor(api: string) {
-        this._api = api;
+    constructor() {
+        this._api = BASE_URL;
     }
 
     get = (url: string, options: Options) => {
