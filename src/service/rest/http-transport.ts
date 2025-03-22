@@ -1,5 +1,5 @@
 import { METHODS } from './method.ts';
-import {BASE_URL} from "../api/base-api.ts";
+import { BASE_URL } from '../api/base-api.ts';
 
 interface Options {
     timeout?: number;
