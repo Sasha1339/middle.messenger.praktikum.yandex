@@ -59,13 +59,18 @@ export default class ChangePasswordComponent extends Block {
         if (!this._profileApi) {
             this._profileApi = new ProfileApi();
         }
-        void this._profileApi.updatePassword(container.fields).then((response) => {
-            if (response.status === 200) {
-                this.setProps({ password: undefined });
-                clickOnAccept();
-            } else if (response.status === 400) {
-                this.setProps({ password: 'true' });
-            }
-        });
+        void this._profileApi
+            .updatePassword(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.setProps({ password: undefined });
+                    clickOnAccept();
+                } else if (response.status === 400) {
+                    this.setProps({ password: 'true' });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }

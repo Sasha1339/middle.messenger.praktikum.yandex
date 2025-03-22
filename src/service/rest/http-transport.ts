@@ -1,4 +1,5 @@
 import { METHODS } from './method.ts';
+import {BASE_URL} from "../api/base-api.ts";
 
 interface Options {
     timeout?: number;
@@ -22,8 +23,8 @@ function queryStringify(data: Record<string, unknown>) {
 export class HttpTransport {
     private _api: string;
 
-    constructor(api: string) {
-        this._api = api;
+    constructor() {
+        this._api = BASE_URL;
     }
 
     get = (url: string, options: Options) => {

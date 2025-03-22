@@ -17,7 +17,7 @@ export default class EditProfileComponent extends Block {
                 id: 'editFormData',
                 FirstNameInput: new Input({
                     placeholder: 'Имя',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'first_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -27,7 +27,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 SecondNameInput: new Input({
                     placeholder: 'Фамилия',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'second_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -37,7 +37,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 DisplayNameInput: new Input({
                     placeholder: 'Отображаемое имя',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'display_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -47,7 +47,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 LoginInput: new Input({
                     placeholder: 'Логин',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'login',
                     pattern: '^(?!\\d+$)[a-zA-Z0-9]+$',
@@ -57,7 +57,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 EmailInput: new Input({
                     placeholder: 'Email',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'email',
                     pattern: '^[A-Za-z0-9\\-_]+@[A-Za-z0-9\\-_]+\\.[A-Za-z0-9\\-_]+$',
@@ -67,7 +67,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 PhoneInput: new Input({
                     placeholder: 'Телефон',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'phone',
                     pattern: '^\\+?\\d+$',
@@ -105,10 +105,15 @@ export default class EditProfileComponent extends Block {
         if (!this._profileApi) {
             this._profileApi = new ProfileApi();
         }
-        void this._profileApi.updateProfile(container.fields).then((response) => {
-            if (response.status === 200) {
-                clickOnAccept();
-            }
-        });
+        void this._profileApi
+            .updateProfile(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    clickOnAccept();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }

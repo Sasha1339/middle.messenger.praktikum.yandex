@@ -1,4 +1,4 @@
-.window {
+.window__file {
   display: flex;
   margin: auto;
   height: 25vh;
@@ -9,9 +9,19 @@
   backdrop-filter: blur(7px);
   align-items: center;
   font-family: Inter, sans-serif;
-  padding: 50px 0;
+  padding: 10px 0 50px;
   color: var(--primary-text);
   border-radius: 20px;
+}
+
+.window__input-file {
+  margin: 0 5%;
+}
+
+.window__cross {
+  width: 25vw;
+  display: flex;
+  justify-content: end;
 }
 
 .window__title {

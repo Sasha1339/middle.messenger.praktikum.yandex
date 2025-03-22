@@ -117,11 +117,16 @@ export default class RegisterComponent extends Block {
 
     outputData(event: SubmitEvent): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        void this._serviceApi.create(container.fields).then((response) => {
-            if (response.status === 200) {
-                this.router.go('/messenger');
-            }
-        });
+        void this._serviceApi
+            .create(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    this.router.go('/messenger');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     onValidate(): void {
