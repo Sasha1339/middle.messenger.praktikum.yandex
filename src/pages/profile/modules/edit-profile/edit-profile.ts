@@ -5,15 +5,19 @@ import Input from '../../../../components/input/input.ts';
 import ClickableText from '../../../../components/clickable-text/clickable-text.ts';
 import FormComponent from '../../../../components/form/form.ts';
 import { FormContainer } from '../../../../utils/form/form-container.ts';
+import { ProfileApi } from '../../../../service/api/profile-api.ts';
 
 export default class EditProfileComponent extends Block {
+    private _profileApi: ProfileApi = new ProfileApi();
+
     constructor(events: { clickOnAccept: () => void; clickOnCancel: () => void }) {
         super({
             Form: new FormComponent({
                 class: 'window',
+                id: 'editFormData',
                 FirstNameInput: new Input({
                     placeholder: 'Имя',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'first_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -23,7 +27,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 SecondNameInput: new Input({
                     placeholder: 'Фамилия',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'second_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -33,7 +37,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 DisplayNameInput: new Input({
                     placeholder: 'Отображаемое имя',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'display_name',
                     pattern: '^[A-ZА-Я][a-zа-яA-ZА-Я\\-]*$',
@@ -43,7 +47,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 LoginInput: new Input({
                     placeholder: 'Логин',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'login',
                     pattern: '^(?!\\d+$)[a-zA-Z0-9]+$',
@@ -53,7 +57,7 @@ export default class EditProfileComponent extends Block {
                 }),
                 EmailInput: new Input({
                     placeholder: 'Email',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'email',
                     pattern: '^[A-Za-z0-9\\-_]+@[A-Za-z0-9\\-_]+\\.[A-Za-z0-9\\-_]+$',
@@ -63,13 +67,13 @@ export default class EditProfileComponent extends Block {
                 }),
                 PhoneInput: new Input({
                     placeholder: 'Телефон',
-                    class: 'window__input',
+                    class: 'window__input profile__input',
                     textType: 'text',
                     name: 'phone',
                     pattern: '^\\+?\\d+$',
                     title: 'Используйте любые цифры, может быть + в начале, от 10 до 15 символов',
                     min: 10,
-                    max: 15
+                    max: 11
                 }),
                 ButtonAccept: new Button({
                     label: 'Редактировать',
@@ -85,7 +89,7 @@ export default class EditProfileComponent extends Block {
                 events: {
                     submit: (event: SubmitEvent) => {
                         event.preventDefault();
-                        this.outputData(event);
+                        this.outputData(event, events.clickOnAccept);
                     }
                 }
             })
@@ -96,8 +100,20 @@ export default class EditProfileComponent extends Block {
         return ProfileEditWindow;
     }
 
-    outputData(event: SubmitEvent): void {
+    outputData(event: SubmitEvent, clickOnAccept: () => void): void {
         const container = new FormContainer(event.target as HTMLFormElement);
-        console.log(container);
+        if (!this._profileApi) {
+            this._profileApi = new ProfileApi();
+        }
+        void this._profileApi
+            .updateProfile(container.fields)
+            .then((response) => {
+                if (response.status === 200) {
+                    clickOnAccept();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }

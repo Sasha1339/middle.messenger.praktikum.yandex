@@ -1,0 +1,37 @@
+.window-new-chat {
+  display: flex;
+  margin: auto;
+  height: 15vh;
+  width: 25vw;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--bg-modal-opacity-window);
+  backdrop-filter: blur(7px);
+  align-items: center;
+  font-family: Inter, sans-serif;
+  padding: 50px 0;
+  color: var(--primary-text);
+  border-radius: 20px;
+}
+
+.window__title {
+  font-size: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+  text-align: center;
+}
+
+.window__button {
+  width: 80%;
+}
+
+.window__button-fixed-size {
+  width: 150px;
+}
+
+.window__buttons {
+  display: flex;
+  width: 80%;
+  justify-content: space-between;
+  flex-direction: row;
+}

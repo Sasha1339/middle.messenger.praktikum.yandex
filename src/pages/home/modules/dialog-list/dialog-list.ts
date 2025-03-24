@@ -1,14 +1,31 @@
 import Block from '../../../../utils/block/block.ts';
-import { DialogModel } from '../../utils/dialog-model.ts';
 import DialogComponent from '../dialog/dialog.ts';
+import { ChatModel } from '../../utils/model.ts';
 
 export default class DialogListComponent extends Block {
-    constructor(allDialogs: DialogModel[], clickEvent: (element: HTMLElement) => void) {
+    constructor(
+        allDialogs: ChatModel[],
+        clickEvent: (element: HTMLElement, chatId: number) => void,
+        deleteEvent: (chatID: number) => void,
+        usersEvent: (chatID: number) => void
+    ) {
         super(
             Object.fromEntries(
-                allDialogs.map((item, index) => [`Dialog${index}`, new DialogComponent(item, clickEvent)])
+                allDialogs.map((item, index) => [
+                    `Dialog${index}`,
+                    new DialogComponent(item, clickEvent, deleteEvent, usersEvent)
+                ])
             )
         );
+    }
+
+    updateCountMessage(chatId: number): void {
+        const dialogComponent = Object.values(this._children).find(
+            (e) => (e as DialogComponent).getChatId() === chatId
+        );
+        if (dialogComponent) {
+            (dialogComponent as DialogComponent).updateCount();
+        }
     }
 
     render(): string {
