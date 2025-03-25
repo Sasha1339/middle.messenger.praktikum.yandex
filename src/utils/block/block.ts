@@ -196,6 +196,10 @@ export default class Block {
         });
     }
 
+    get props(): Record<string, unknown> {
+        return this._props;
+    }
+
     _addEvents() {
         const { events } = this._props;
 
