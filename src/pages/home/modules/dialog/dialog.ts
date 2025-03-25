@@ -1,7 +1,7 @@
 import { Dialog } from './index.ts';
 import Block from '../../../../utils/block/block.ts';
 import { ChatModel } from '../../utils/model.ts';
-import avatar from '../../../../assets/image/avatar.jpg';
+import avatar from '../../../../assets/image/default.png';
 import ButtonImage from '../../../../components/button-image/button-image.ts';
 import deleteChat from '../../../../assets/svg/card.svg';
 import usersChat from '../../../../assets/svg/user.svg';

@@ -2,7 +2,7 @@ import Block from '../../utils/block/block.ts';
 import Button from '../../components/button/buttons.ts';
 import { ProfilePage } from './index.ts';
 import arrow from '../../assets/svg/arrow.svg';
-import avatar from '../../assets/image/avatar.jpg';
+import avatar from '../../assets/image/default.png';
 import LoadFilesComponent from './modules/load-files/load-files.ts';
 import WindowExitComponent from './modules/window-exit/window-exit.ts';
 import EditProfileComponent from './modules/edit-profile/edit-profile.ts';
@@ -127,7 +127,9 @@ export default class ProfileComponent extends Block {
         void this.profileApi.updateAvatar(data).then((response) => {
             if (response.status === 200) {
                 this.setProps({
-                    avatar: 'https://ya-praktikum.tech/api/v2/resources' + JSON.parse(response.response).avatar
+                    avatar: JSON.parse(response.response).avatar
+                        ? 'https://ya-praktikum.tech/api/v2/resources' + JSON.parse(response.response).avatar
+                        : avatar
                 });
             }
         });
@@ -149,7 +151,9 @@ export default class ProfileComponent extends Block {
                         display_name: this._user!.display_name,
                         phone: this._user!.phone,
                         email: this._user!.email,
-                        avatar: 'https://ya-praktikum.tech/api/v2/resources' + JSON.parse(response.response).avatar
+                        avatar: JSON.parse(response.response).avatar
+                            ? 'https://ya-praktikum.tech/api/v2/resources' + JSON.parse(response.response).avatar
+                            : avatar
                     });
                     (document.querySelector('[name="login"].profile__input') as HTMLInputElement).value =
                         this._user!.login;
