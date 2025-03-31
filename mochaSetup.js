@@ -6,4 +6,5 @@ const jsdom = new JSDOM('<!DOCTYPE html><html><body id="app"></body></html>', {
 
 global.window = jsdom.window;
 global.document = jsdom.window.document;
+global.MouseEvent = jsdom.window.MouseEvent;
 global.FormData = jsdom.window.FormData;
