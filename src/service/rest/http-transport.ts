@@ -1,7 +1,7 @@
 import { METHODS } from './method.ts';
 import { BASE_URL } from '../api/base-api.ts';
 
-interface Options {
+export interface Options {
     timeout?: number;
     headers?: Record<string, string>;
     method?: METHODS;
